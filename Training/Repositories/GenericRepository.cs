@@ -19,7 +19,7 @@ namespace Training.Repositories
 
         public IEnumerable<Student> GetAll(int page)
         {
-            int pageSize = 5;
+            int pageSize = 7;
             int offset = (page - 1) * pageSize;
             return _context.Students.ToList().Skip(offset).Take(pageSize);
         }
