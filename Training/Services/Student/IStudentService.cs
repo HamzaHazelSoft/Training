@@ -6,6 +6,7 @@ namespace Training.Services
     public interface IStudentService
     {
         public IEnumerable<Student> GetAllStudents();
+  
         public bool AddStudent(Student student);
         public Student GetStudentById(int id);
         public bool DeleteStudentById(int id);
