@@ -17,9 +17,11 @@ namespace Training.Repositories
             _mapper = mapper;
         }
 
-        public IEnumerable<Student> GetAll()
+        public IEnumerable<Student> GetAll(int page)
         {
-            return _context.Students.ToList();
+            int pageSize = 5;
+            int offset = (page - 1) * pageSize;
+            return _context.Students.ToList().Skip(offset).Take(pageSize);
         }
 
         public bool Add(Student student)

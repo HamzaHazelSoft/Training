@@ -15,10 +15,10 @@ namespace Training.Services
         {
             _genericRepository = genericRepository;
         }   
-        public IEnumerable<Student> GetAllStudents()
+        public IEnumerable<Student> GetAllStudents(int page)
         {
             //business logic
-            return _genericRepository.GetAll();
+            return _genericRepository.GetAll(page);
 
         }
         public bool AddStudent(Student student)

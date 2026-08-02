@@ -18,9 +18,9 @@ namespace Training.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(int page=1)
         {
-            var students = _studentService.GetAllStudents();
+            var students = _studentService.GetAllStudents(page);
             return Ok(students); 
         }
 
