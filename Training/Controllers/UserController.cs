@@ -12,7 +12,7 @@ namespace Training.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : BaseController
     {
         private readonly IUserService _userService;
 
@@ -20,61 +20,33 @@ namespace Training.Controllers
         Inversion of Control principle by using dependency injection. The service does not create the context and mapper instances,
         but rather receives them from the outside means Framework
 */
-        public UserController(IUserService UserService)
+        public UserController(IUserService UserService) 
         {
             _userService = UserService;
         }
 
         // Adds a new user into the database
         [HttpPost]
-        public IActionResult Create([FromBody]User user)
+        public IActionResult Create(User user)
         {
-            ApiResponse<User> response;
-
             try
             {
                 bool status = _userService.AddUser(user);
 
                 if (status)
                 {
-                    response = new ApiResponse<User>
-                    {
-                        Payload = new Payload<User>
-                        {
-                            Items = new Item<User> { Data = user },
-                            Status = 1,
-                            Message = "User created successfully"
-                        }
-                    };
+                    return Object<User>(user, "User created successfully");
                 }
-                else
-                {
-                    response = new ApiResponse<User>
-                    {
-                        Payload = new Payload<User>
-                        {
-                            Items = new Item<User> { Data = null },
-                            Status = 0,
-                            Message = "User creation failed"
-                        }
-                    };
-                }
-            }
-            catch (Exception e)
-            {
-                response = new ApiResponse<User>
-                {
-                    Payload = new Payload<User>
-                    {
-                        Items = new Item<User> { Data = null },
-                        Status = 0,
-                        Message = "An error occurred while creating the user",
-                        Errors = new List<string> { e.Message }
-                    }
-                };
-            }
 
-            return Ok(response);
+                return Object("User creation failed");
+            }
+            catch (Exception ex)
+            {
+                return Object(
+                    ex, 
+                    "An error occurred while creating user"
+                );
+            }
         }
 
 
@@ -82,52 +54,23 @@ namespace Training.Controllers
         [HttpGet("{id}")]
         public IActionResult GetById(string id)
         {
-            ApiResponse<User> response;
             try
             {
-                User user = _userService.GetUserById(id);
-
+                var user = _userService.GetUserById(id);
                 if (user != null)
                 {
-                    response = new ApiResponse<User>
-                    {
-                        Payload = new Payload<User>
-                        {
-                            Items = new Item<User> { Data = user },
-                            Status = 1,
-                            Message = "User retrieved successfully"
-                        }
-                    };
-
+                    return Object<User>(user, "User retrieved successfully");
                 }
-                else
-                {
-                    response = new ApiResponse<User>
-                    {
-                        Payload = new Payload<User>
-                        {
-                            Items = new Item<User> { Data = null },
-                            Status = 0,
-                            Message = "User not found"
-                        }
-                    };
-                }
+                return Object("User not found");
             }
             catch (Exception ex)
             {
-                response = new ApiResponse<User>
-                {
-                    Payload = new Payload<User>
-                    {
-                        Items = new Item<User> { Data = null },
-                        Status = 0,
-                        Message = "An error occurred while retrieving the user",
-                        Errors = new List<string> { ex.Message }
-                    }
-                };
+                return Object(
+                    ex,
+                    "An error occurred while retrieving user"   
+                );
             }
 
-            return Ok(response);
         }
 
         // Deletes a user by Id
@@ -135,48 +78,22 @@ namespace Training.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            ApiResponse<User> response;
-            try {
+            try
+            {
                 bool status = _userService.DeleteUserById(id);
                 if (status)
                 {
-                    response = new ApiResponse<User>
-                    {
-                        Payload = new Payload<User>
-                        {
-                            Items = new Item<User> { Data = null },
-                            Status = 1,
-                            Message = "User deleted successfully"
-                        }
-                    };
+                    return Response<object>(null, "User deleted successfully");
                 }
-                else
-                {
-                    response = new ApiResponse<User>
-                    {
-                        Payload = new Payload<User>
-                        {
-                            Items = new Item<User> { Data = null },
-                            Status = 0,
-                            Message = "User not found"
-                        }
-                    };
-                }
+                return Response("User not found");
             }
-            catch (Exception ex) {
-                response = new ApiResponse<User>
-                {
-                    Payload = new Payload<User>
-                    {
-                        Items = new Item<User> { Data = null },
-                        Status = 0,
-                        Message = "An error occurred while deleting the user",
-                        Errors = new List<string> { ex.Message }
-                    }
-                };
+            catch (Exception ex)
+            {
+                return Response(
+                    ex,
+                    "An error occurred while deleting user"
+                );
             }
-
-            return Ok(response);
         }
 
         // Updates an existing user
@@ -184,50 +101,23 @@ namespace Training.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(string id, UserDTO User)
         {
-            ApiResponse<User> response;
             try
             {
                 bool status = _userService.UpdateUserById(id, User);
                 if (status)
                 {
-                    response = new ApiResponse<User>
-                    {
-                        Payload = new Payload<User>
-                        {
-                            Items = new Item<User> { Data = null },
-                            Status = 1,
-                            Message = "User updated successfully"
-                        }
-                    };
+                    return Response<UserDTO>(User, "User updated successfully");
                 }
-                else
-                {
-                    response = new ApiResponse<User>
-                    {
-                        Payload = new Payload<User>
-                        {
-                            Items = new Item<User> { Data = null },
-                            Status = 0,
-                            Message = "User not found"
-                        }
-                    };
-                }
+                return Response("User not found");
+
             }
             catch (Exception ex)
             {
-                response = new ApiResponse<User>
-                {
-                    Payload = new Payload<User>
-                    {
-                        Items = new Item<User> { Data = null },
-                        Status = 0,
-                        Message = "An error occurred while updating the user",
-                        Errors = new List<string> { ex.Message }
-                    }
-                };
+                return Response(
+                    ex,
+                    "An error occurred while updating user"
+                );
             }
-
-            return Ok(response);
         }
     }
 }
