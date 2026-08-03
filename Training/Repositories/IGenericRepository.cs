@@ -5,7 +5,7 @@ namespace Training.Repositories
 {
     public interface IGenericRepository
     {
-        public IEnumerable<Student> GetAll(int page);
+        public PaginationResponse<Student> GetAll(int page);
         public bool Add(Student student);
         public Student GetById(int id);
         public bool DeleteById(int id);

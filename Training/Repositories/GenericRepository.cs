@@ -17,11 +17,18 @@ namespace Training.Repositories
             _mapper = mapper;
         }
 
-        public IEnumerable<Student> GetAll(int page)
+        public PaginationResponse<Student> GetAll(int page)
         {
-            int pageSize = 7;
+            int pageSize = 3;
             int offset = (page - 1) * pageSize;
-            return _context.Students.ToList().Skip(offset).Take(pageSize);
+
+            return new PaginationResponse<Student>
+            {
+                Data = _context.Students.OrderBy(s => s.RollNumber).Skip(offset).Take(pageSize).ToList(),
+                Count = _context.Students.Count(),
+                nextPage = _context.Students.Count() > offset + pageSize ? $"/api/Student?page={page + 1}" : null,
+                previousPage = page > 1 ? $"/api/Student?page={page - 1}" : null
+            };
         }
 
         public bool Add(Student student)
