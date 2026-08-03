@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Training.Mappings;
 using Training.Models;
-using Training.Repositories;
 using Training.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,14 +9,13 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<TrainingContext>(options =>
     options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
 
-builder.Services.AddAutoMapper(typeof(StudentMapping));
+builder.Services.AddAutoMapper(typeof(UserMapping));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddScoped<IStudentService,StudentService>();
-builder.Services.AddScoped<IGenericRepository,GenericRepository>();
+builder.Services.AddScoped<IUserService,UserService>();
 
 var app = builder.Build();
 
