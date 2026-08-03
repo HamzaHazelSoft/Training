@@ -13,10 +13,6 @@ namespace Training.Services
         private readonly TrainingContext _context;
         private readonly IMapper _mapper;
 
-        /* DI Because it losely couples the application making it easier to maintain. In simple words, we achieved the
-        Inversion of Control principle by using dependency injection. The service does not create the context and mapper instances,
-        but rather receives them from the outside means Framework
-        */
         public UserService(TrainingContext context, IMapper mapper)
         {
             _context = context;
