@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Reflection.Metadata.Ecma335;
 using Training.DTOs;
 using Training.Models;
 using Training.Services;
@@ -17,16 +18,6 @@ namespace Training.Controllers
             _userService = UserService;
         }
 
-        //Return all users exist in DB
-
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var Users = _userService.GetAllUsers();
-            return Ok(Users); 
-        }
-
-
         // Adds a new user into the database
         [HttpPost]
         public IActionResult Create([FromBody]User user)
@@ -37,7 +28,9 @@ namespace Training.Controllers
             }
 
             bool status = _userService.AddUser(user);
-            return Ok($"User  {(status ? " added successfully" : " could not be added")}");
+            return status
+                ? Ok( new { message = "User created successfully" })
+                : BadRequest(new { message = "Failed to create user" }); //If invalid data is sent
         }
 
 
@@ -46,7 +39,7 @@ namespace Training.Controllers
         public IActionResult GetById(string id)
         {
             User User = _userService.GetUserById(id);
-            return User != null ? Ok(User) : Ok(new { message = "User not found" });
+            return User != null ? Ok(User) : NotFound(new { message = "User not found" });
         }
 
         // Deletes a user by Id
@@ -56,7 +49,7 @@ namespace Training.Controllers
         {
             bool status = _userService.DeleteUserById(id);
             return status == true ? Ok(new { message = "User deleted successfully" }) :
-                Ok(new { message = "Failed to delete user" });
+                StatusCode(500, new { message = "Failed to delete user" }); //Internal Server Error
         }
 
         // Updates an existing user
@@ -66,7 +59,7 @@ namespace Training.Controllers
         {
             bool status = _userService.UpdateUserById(id,User);
             return status == true ? Ok(new { message = "User updated successfully" }) : 
-                Ok(new { message = "Failed to update user" });
+                StatusCode(500, new { message = "Failed to update user" }); //Internal Server Error
         }
     }
 }

@@ -5,7 +5,6 @@ namespace Training.Services
 {
     public interface IUserService
     {
-        public IEnumerable<User> GetAllUsers();
         public bool AddUser(User User);
         public User GetUserById(string id);
         public bool DeleteUserById(string id);

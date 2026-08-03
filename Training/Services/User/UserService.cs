@@ -13,8 +13,7 @@ namespace Training.Services
         private readonly TrainingContext _context;
         private readonly IMapper _mapper;
 
-        /* Using dependency injection to get the context and mapper instances . Why dependency injection? Because it losely couples
-        the service with the context and mapper, making it easier to maintain. In simple words, we achieved the
+        /* DI Because it losely couples the application making it easier to maintain. In simple words, we achieved the
         Inversion of Control principle by using dependency injection. The service does not create the context and mapper instances,
         but rather receives them from the outside means Framework
         */
@@ -23,11 +22,6 @@ namespace Training.Services
             _context = context;
             _mapper = mapper;
         }
-        public IEnumerable<User> GetAllUsers()
-        {
-            return _context.Users.ToList(); //Return the list of all users in the database
-        }
-
         
         public bool AddUser(User user)
         {
