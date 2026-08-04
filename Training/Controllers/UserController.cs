@@ -34,7 +34,7 @@ namespace Training.Controllers
                 bool status = _userService.AddUser(user);
 
                 if (status)
-                    return Ok("User created successfully", user);
+                    return Ok("User created successfully", user); //Method1
 
                 return BadRequest("User creation failed");
             }
@@ -53,7 +53,7 @@ namespace Training.Controllers
                 var user = _userService.GetUserById(id);
 
                 if (user != null)
-                    return Ok("User retrieved successfully", user);
+                    return Ok("User retrieved successfully", user); //Method1
 
                 return BadRequest("User not found");
             }
@@ -72,7 +72,7 @@ namespace Training.Controllers
                 bool status = _userService.DeleteUserById(id);
 
                 if (status)
-                    return Ok<object>("User deleted successfully", null);
+                    return Ok("User deleted successfully");
 
                 return BadRequest("User not found");
             }
@@ -91,7 +91,7 @@ namespace Training.Controllers
                 bool status = _userService.UpdateUserById(id, user);
 
                 if (status)
-                    return Ok("User updated successfully", user);
+                    return Ok("User updated successfully", user); //Method1
 
                 return BadRequest("User not found");
             }

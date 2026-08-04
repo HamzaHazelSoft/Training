@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Training.Mappings;
 using Training.Models;
 using Training.Services;
+using Training.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -18,6 +20,27 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddScoped<IUserService,UserService>(); //Framework inject UserService class when IUserService is requested
+
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var response = new Response<object>
+        {
+            Success = false,
+            Message = "Validation Failed",
+            Data = null,
+            Errors = context.ModelState
+                .Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage)
+                .ToList()
+        };
+
+        return new BadRequestObjectResult(response);
+    };
+});
 
 var app = builder.Build();
 
