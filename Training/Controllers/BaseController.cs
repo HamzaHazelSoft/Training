@@ -1,52 +1,25 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using Training.Helper;
-
 namespace Training.Controllers;
 
 public class BaseController : ControllerBase
 {
-    protected IActionResult Object<T>(T data, string message)
-    {
-        return Ok(new ApiResponse<T>
-        {
-            Payload = new Payload<T>
-            {
-                Status = 1,
-                Message = message,
-                Items = new Item<T>
-                {
-                    Data = data
-                }
-            }
-        });
-    }
 
-    protected IActionResult Object(string message)
-    {
-        return BadRequest(new ApiResponse<object>
+        //Use protected here because i want Ye method sirf isi class aur iski child classes use karein hain.
+        protected OkObjectResult Ok<T>(string message, T? data)
         {
-            Payload = new Payload<object>
-            {
-                Message = message,
-                Items = null
-            }
-        });
-    }
+            return (OkObjectResult)Ok(Response<T>.SuccessResponse(message, data));
+        }
 
-
-    protected IActionResult Object(Exception ex, string message)
-    {
-        return Ok(5new ApiResponse<object>
+        protected BadRequestObjectResult BadRequest(string message)
         {
-            Payload = new Payload<object>
-            {
-                Message = message,
-                Items = null,
-                Errors = new List<string>
-                {
-                    ex.Message
-                }
-            }
-        });
-    }
+            return (BadRequestObjectResult)BadRequest(Response<object>.FailureResponse(message));
+        }
+
+        protected BadRequestObjectResult BadRequest(string message, Exception ex)
+        {
+            return (BadRequestObjectResult)BadRequest(Response<object>.FailureResponse(message,ex));
+        }
+
 }

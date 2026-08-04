@@ -25,7 +25,7 @@ namespace Training.Controllers
             _userService = UserService;
         }
 
-        // Adds a new user into the database
+        // Create User
         [HttpPost]
         public IActionResult Create(User user)
         {
@@ -34,89 +34,70 @@ namespace Training.Controllers
                 bool status = _userService.AddUser(user);
 
                 if (status)
-                {
-                    return Object<User>(user, "User created successfully");
-                }
+                    return Ok("User created successfully", user);
 
-                return Object("User creation failed");
+                return BadRequest("User creation failed");
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                return Object(
-                    ex, 
-                    "An error occurred while creating user"
-                );
+                return BadRequest("An error occurred while creating user", ex);
             }
         }
 
-
-        // Returns a user by its Id and id recieve as Route Param
+        // Get User By Id
         [HttpGet("{id}")]
         public IActionResult GetById(string id)
         {
             try
             {
                 var user = _userService.GetUserById(id);
-                if (user != null)
-                {
-                    return Object<User>(user, "User retrieved successfully");
-                }
-                return Object("User not found");
-            }
-            catch (Exception ex)
-            {
-                return Object(
-                    ex,
-                    "An error occurred while retrieving user"   
-                );
-            }
 
+                if (user != null)
+                    return Ok("User retrieved successfully", user);
+
+                return BadRequest("User not found");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("An error occurred while retrieving user", ex);
+            }
         }
 
-        // Deletes a user by Id
-
+        // Delete User
         [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
             try
             {
                 bool status = _userService.DeleteUserById(id);
+
                 if (status)
-                {
-                    return Response<object>(null, "User deleted successfully");
-                }
-                return Response("User not found");
+                    return Ok<object>("User deleted successfully", null);
+
+                return BadRequest("User not found");
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                return Response(
-                    ex,
-                    "An error occurred while deleting user"
-                );
+                return BadRequest("An error occurred while deleting user", ex);
             }
         }
 
-        // Updates an existing user
-
+        // Update User
         [HttpPut("{id}")]
-        public IActionResult Update(string id, UserDTO User)
+        public IActionResult Update(string id, UserDTO user)
         {
             try
             {
-                bool status = _userService.UpdateUserById(id, User);
-                if (status)
-                {
-                    return Response<UserDTO>(User, "User updated successfully");
-                }
-                return Response("User not found");
+                bool status = _userService.UpdateUserById(id, user);
 
+                if (status)
+                    return Ok("User updated successfully", user);
+
+                return BadRequest("User not found");
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                return Response(
-                    ex,
-                    "An error occurred while updating user"
-                );
+                return BadRequest("An error occurred while updating user", ex);
             }
         }
     }
