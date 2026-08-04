@@ -27,11 +27,11 @@ namespace Training.Controllers
 
         // Create User
         [HttpPost]
-        public IActionResult Create(User user)
+        public async Task<IActionResult> Create(User user)
         {
             try
             {
-                bool status = _userService.AddUser(user);
+                bool status = await _userService.AddUser(user);
 
                 if (status)
                     return Ok("User created successfully", user); //Method1
@@ -46,11 +46,11 @@ namespace Training.Controllers
 
         // Get User By Id
         [HttpGet("{id}")]
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
-                var user = _userService.GetUserById(id);
+                var user = await _userService.GetUserById(id);
 
                 if (user != null)
                     return Ok("User retrieved successfully", user); //Method1
@@ -65,11 +65,11 @@ namespace Training.Controllers
 
         // Delete User
         [HttpDelete("{id}")]
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             try
             {
-                bool status = _userService.DeleteUserById(id);
+                bool status = await _userService.DeleteUserById(id);
 
                 if (status)
                     return Ok("User deleted successfully");
@@ -84,11 +84,11 @@ namespace Training.Controllers
 
         // Update User
         [HttpPut("{id}")]
-        public IActionResult Update(string id, UserDTO user)
+        public async Task<IActionResult> Update(string id, UserDTO user)
         {
             try
             {
-                bool status = _userService.UpdateUserById(id, user);
+                bool status = await _userService.UpdateUserById(id, user);
 
                 if (status)
                     return Ok("User updated successfully", user); //Method1

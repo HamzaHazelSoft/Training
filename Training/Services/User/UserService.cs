@@ -2,6 +2,7 @@
 
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Training.DTOs;
 using Training.Models;
 
@@ -19,33 +20,33 @@ namespace Training.Services
             _mapper = mapper;
         }
         
-        public bool AddUser(User user)
+        public async Task<bool> AddUser(User user)
         {
             _context.Users.Add(user); // Not yet saved . It bind flag of Added
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public User GetUserById(string id)
+        public async Task<User> GetUserById(string id)
         {
-            return _context.Users.FirstOrDefault(x => x.Id.Equals(id)); // Returns the first user that matches the Id,
-                                                                        // or null if no user is found
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(id)); // Returns the first user that matches the Id,
+                                                                                 // or null if no user is found
         }
 
         // Deletes a user by Id
-        public bool DeleteUserById(string id)
+        public async Task<bool> DeleteUserById(string id)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id.Equals(id)); //Returns the first user that matches the Id,
-                                                                            //or null if no user is found
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(id)); //Returns the first user that matches the Id,
+                                                                                       //or null if no user is found
 
             if (user == null)
                 return false;
 
             _context.Users.Remove(user); // Now it modifies the flag of the user to be deleted
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
-        public bool UpdateUserById(string id, UserDTO userDto)
+        public async Task<bool> UpdateUserById(string id, UserDTO userDto)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id.Equals(id));
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
             if (user == null)
                 return false;
@@ -54,7 +55,7 @@ namespace Training.Services
 
             _context.Users.Update(user); //Now it modifies the flag of the user to be updated
 
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

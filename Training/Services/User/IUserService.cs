@@ -5,10 +5,10 @@ namespace Training.Services
 {
     public interface IUserService
     {
-        public bool AddUser(User User);
-        public User GetUserById(string id);
-        public bool DeleteUserById(string id);
-        public bool UpdateUserById(string id, UserDTO User);
+        public Task<bool> AddUser(User User);
+        public Task<User> GetUserById(string id);
+        public Task<bool> DeleteUserById(string id);
+        public Task<bool> UpdateUserById(string id, UserDTO User);
 
     }
 }
