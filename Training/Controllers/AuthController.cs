@@ -25,12 +25,12 @@ namespace Training.Controllers
         {
             try
             {
-                var result = await _authService.Register(registerDTO);
-                if (!result)
+                var response = await _authService.Register(registerDTO);
+                if (!response.Success)
                 {
-                    return BadRequest("Failed to register user");
+                    return BadRequest(response);
                 }
-                return Ok("User registered successfully");
+                return Ok(response);
             }
             catch(Exception ex)
             {

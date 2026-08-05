@@ -8,8 +8,8 @@ namespace Training.Models;
 
 public  class User : IdentityUser
 {
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public DateOnly DOB { get; set; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public DateOnly? DOB { get; set; }
 
 }

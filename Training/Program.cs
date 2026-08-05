@@ -34,30 +34,22 @@ builder.Services.AddScoped<IUserService,UserService>(); //Framework inject UserS
 builder.Services.AddScoped<IAuthService,AuthService>();
 
 
-// Configure custom response for model validation errors
+// Configure custom response for model validation errors Extension
 builder.Services.ValidateInvalidModel();
 
-//To verify JWT token 
+//To verify JWT token Extension
 builder.Services.AddJwtAuthentication(builder.Configuration); //Extension Method
                                                               //Internally it calls JwtExtension.AddJwtAuthentication(builder.services,builder.Configuration)
 
-//Identity Password Settings
-builder.Services.Configure(options =>
-{
-    options.Password.RequiredLength = 8; // Change length
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequireNonAlphanumeric = false; // Allow no special characters
-    options.Password.RequiredUniqueChars = 1;
-});
+//Identity Password Settings Extension
+builder.Services.ConfigurePassword();
 
 
 builder.Services.AddScoped<ITokenService,TokenService>();
 
 var app = builder.Build();
 
-//SeedRoles
+//SeedRoles Extension
 await app.SeedRoles();
 
 // Configure the HTTP request pipeline.

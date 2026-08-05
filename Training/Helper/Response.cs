@@ -46,7 +46,7 @@
         // Failure with exception
         public static Response<T> FailureResponse(string message, Exception ex)
         {
-            List<string> errors = new List<string> { ex.Message };
+            List<string> errors = new List<string> { ex.Message, ex.InnerException?.Message };
 
 
             return new Response<T>

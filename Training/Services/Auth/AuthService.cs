@@ -18,7 +18,7 @@ namespace Training.Services.Auth
             _signinManager = signinManager;
             _tokenService = tokenService;
         }
-        public async Task<bool> Register(RegisterDTO registerDTO)
+        public async Task<Response<User>> Register(RegisterDTO registerDTO)
         {
             var user = new User
             {
@@ -28,11 +28,11 @@ namespace Training.Services.Auth
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
 
             if (!result.Succeeded)
-                return false;
+                return Response<User>.FailureResponse("Failed to register user");
 
             await _userManager.AddToRoleAsync(user, "User");
 
-            return true;
+            return Response<User>.SuccessResponse("User registered Successfully",user);
         }
         public async Task<Response<string>> Login(LoginDTO loginDTO)
         {
