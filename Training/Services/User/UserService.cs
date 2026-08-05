@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Training.DTOs;
+using Training.Helper;
 using Training.Models;
 using Training.Repositories;
 
@@ -20,7 +21,35 @@ namespace Training.Services
             this.genericRepository = genericRepository;
             this._mapper = mapper;
         }
-        
+
+        public async Task<PaginationResponse<User>> GetAllUsers(PaginationRequest paginationRequest)
+        {
+            if (paginationRequest == null)
+                return new PaginationResponse<User>();
+
+            if (paginationRequest.CurrentPage <= 0)
+                paginationRequest.CurrentPage = 1;
+
+            if (paginationRequest.PageSize <= 0)
+                paginationRequest.PageSize = 10;
+
+            if (string.IsNullOrWhiteSpace(paginationRequest.SortColumn))
+                paginationRequest.SortColumn = "Id";
+
+            if (string.IsNullOrWhiteSpace(paginationRequest.SortOrder))
+                paginationRequest.SortOrder = "DESC";
+
+            paginationRequest.SortOrder = paginationRequest.SortOrder.ToUpper();
+
+            if (paginationRequest.SortOrder != "ASC" &&
+                paginationRequest.SortOrder != "DESC")
+            {
+                paginationRequest.SortOrder = "DESC";
+            }
+
+            return await genericRepository.GetAllAsync(paginationRequest);
+        }  
+
         public async Task<bool> AddUser(UserDTO userDto)
         {
             if(userDto == null)

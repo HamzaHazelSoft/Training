@@ -4,6 +4,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Training.DTOs;
+using Training.Helper;
 using Training.Models;
 
 namespace Training.Repositories
@@ -22,6 +23,30 @@ namespace Training.Repositories
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<PaginationResponse<T>> GetAllAsync(PaginationRequest paginationRequest)
+        {
+            IQueryable<T> query = _dbset.AsQueryable();
+
+            query = paginationRequest.SortOrder == "DESC"
+                ? query.OrderByDescending(x => EF.Property<object>(x, paginationRequest.SortColumn))
+                : query.OrderBy(x => EF.Property<object>(x, paginationRequest.SortColumn));
+
+            int totalRecords = await query.CountAsync();
+
+            var items = await query
+                .Skip((paginationRequest.CurrentPage - 1) * paginationRequest.PageSize)
+                .Take(paginationRequest.PageSize)
+                .ToListAsync();
+
+            return new PaginationResponse<T>
+            {
+                Total = totalRecords,
+                CurrentPage = paginationRequest.CurrentPage,
+                PageSize = paginationRequest.PageSize,
+                Items = items
+            };
+        }
         public async Task<bool> AddAsync(T entity) {
             _dbset.Add(entity); // Not yet saved . It bind flag of Added
             return await SaveChangesAsync();
@@ -37,7 +62,7 @@ namespace Training.Repositories
                                           //or null if no entity is found
             if (entity == null)
                 return false;
-
+ 
             _dbset.Remove(entity); // Now it modifies the flag of the entity to be deleted
             return await SaveChangesAsync();
         }

@@ -1,6 +1,6 @@
 ﻿namespace Training.Helper
 {
-    public class Constants
+    public class Constant
     {
         public static class MessageConstants
         {

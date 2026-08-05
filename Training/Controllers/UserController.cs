@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Primitives;
 using Microsoft.Identity.Client;
 using System.Reflection.Metadata.Ecma335;
 using Training.DTOs;
@@ -24,6 +25,14 @@ namespace Training.Controllers
         public UserController(IUserService UserService) 
         {
             _userService = UserService;
+        }
+
+        //GetAllUser
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] PaginationRequest paginationRequest)
+        {
+            var users = await _userService.GetAllUsers(paginationRequest);
+            return Ok(users);
         }
 
         // Create User
