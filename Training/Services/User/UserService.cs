@@ -5,57 +5,60 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Training.DTOs;
 using Training.Models;
+using Training.Repositories;
 
 namespace Training.Services
 {
     public class UserService : IUserService
     {
 
-        private readonly TrainingContext _context;
+        private readonly IGenericRepository<User> genericRepository;
         private readonly IMapper _mapper;
 
-        public UserService(TrainingContext context, IMapper mapper)
+        public UserService(IGenericRepository<User> genericRepository, IMapper mapper)
         {
-            _context = context;
-            _mapper = mapper;
+            this.genericRepository = genericRepository;
+            this._mapper = mapper;
         }
         
-        public async Task<bool> AddUser(User user)
+        public async Task<bool> AddUser(UserDTO userDto)
         {
-            _context.Users.Add(user); // Not yet saved . It bind flag of Added
-            return await _context.SaveChangesAsync() > 0;
+            if(userDto == null)
+                return false;
+
+            var user = _mapper.Map<User>(userDto); //Map the UserDTO to a User entity
+            return await genericRepository.AddAsync(user);
         }
 
         public async Task<User> GetUserById(string id)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(id)); // Returns the first user that matches the Id,
-                                                                                 // or null if no user is found
+            if(string.IsNullOrEmpty(id))
+                return null;
+            
+            return await genericRepository.GetByIdAsync(id);
         }
 
         // Deletes a user by Id
         public async Task<bool> DeleteUserById(string id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(id)); //Returns the first user that matches the Id,
-                                                                                       //or null if no user is found
-
-            if (user == null)
+            if (string.IsNullOrEmpty(id))
                 return false;
 
-            _context.Users.Remove(user); // Now it modifies the flag of the user to be deleted
-            return await _context.SaveChangesAsync() > 0;
+            return await genericRepository.DeleteByIdAsync(id);
         }
         public async Task<bool> UpdateUserById(string id, UserDTO userDto)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.Equals(id));
+            if (string.IsNullOrEmpty(id) || userDto == null)
+                return false;
+
+            var user = await genericRepository.GetByIdAsync(id); //Get the user by Id
 
             if (user == null)
                 return false;
 
             _mapper.Map(userDto, user); //Mapper copies all related fields from userDto to user
 
-            _context.Users.Update(user); //Now it modifies the flag of the user to be updated
-
-            return await _context.SaveChangesAsync() > 0;
+            return await genericRepository.UpdateAsync(user);
         }
     }
 }

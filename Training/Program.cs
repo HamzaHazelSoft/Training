@@ -7,6 +7,7 @@ using Training.Extensions;
 using Training.Helper;
 using Training.Mappings;
 using Training.Models;
+using Training.Repositories;
 using Training.Services;
 using Training.Services.Auth;
 using Training.Services.Jwt;
@@ -46,6 +47,7 @@ builder.Services.ConfigurePassword();
 
 
 builder.Services.AddScoped<ITokenService,TokenService>();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 var app = builder.Build();
 

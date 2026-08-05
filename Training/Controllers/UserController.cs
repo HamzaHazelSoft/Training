@@ -28,20 +28,20 @@ namespace Training.Controllers
 
         // Create User
         [HttpPost]
-        public async Task<IActionResult> Create(User user)
+        public async Task<IActionResult> Create(UserDTO user)
         {
             try
             {
                 bool status = await _userService.AddUser(user);
 
                 if (status)
-                    return Ok("User created successfully", user); //Method1
+                    return Ok(Constant.MessageConstants.UserCreatedSuccessfully, user); //Method1
 
-                return BadRequest("User creation failed");
+                return BadRequest(Constant.MessageConstants.UserCreationFailed);
             }
             catch(Exception ex)
             {
-                return BadRequest("An error occurred while creating user", ex);
+                return BadRequest(Constant.MessageConstants.ErrorCreatingUser, ex);
             }
         }
 
@@ -54,13 +54,13 @@ namespace Training.Controllers
                 var user = await _userService.GetUserById(id);
 
                 if (user != null)
-                    return Ok("User retrieved successfully", user); //Method1
+                    return Ok(Constant.MessageConstants.UserRetrievedSuccessfully, user); //Method1
 
-                return BadRequest("User not found");
+                return BadRequest(Constant.MessageConstants.UserNotFound);
             }
             catch(Exception ex)
             {
-                return BadRequest("An error occurred while retrieving user", ex);
+                return BadRequest(Constant.MessageConstants.ErrorRetrievingUser, ex);
             }
         }
 
@@ -73,13 +73,13 @@ namespace Training.Controllers
                 bool status = await _userService.DeleteUserById(id);
 
                 if (status)
-                    return Ok("User deleted successfully");
+                    return Ok(Constant.MessageConstants.UserDeletedSuccessfully);
 
-                return BadRequest("User not found");
+                return BadRequest(Constant.MessageConstants.UserNotFound);
             }
             catch(Exception ex)
             {
-                return BadRequest("An error occurred while deleting user", ex);
+                return BadRequest(Constant.MessageConstants.ErrorDeletingUser, ex);
             }
         }
 
@@ -92,13 +92,13 @@ namespace Training.Controllers
                 bool status = await _userService.UpdateUserById(id, user);
 
                 if (status)
-                    return Ok("User updated successfully", user); //Method1
+                    return Ok(Constant.MessageConstants.UserUpdatedSuccessfully, user); //Method1
 
-                return BadRequest("User not found");
+                return BadRequest(Constant.MessageConstants.UserNotFound);
             }
             catch(Exception ex)
             {
-                return BadRequest("An error occurred while updating user", ex);
+                return BadRequest(Constant.MessageConstants.ErrorUpdatingUser, ex);
             }
         }
     }
