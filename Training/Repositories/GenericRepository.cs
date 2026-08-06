@@ -2,8 +2,10 @@
 
 
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Training.DTOs;
+using Training.Enums;
 using Training.Helper;
 using Training.Models;
 
@@ -24,28 +26,38 @@ namespace Training.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<PaginationResponse<T>> GetAllAsync(PaginationRequest paginationRequest)
+        public async Task<PaginationResponse<T>> GetAsync(PaginationRequest paginationRequest)
         {
-            IQueryable<T> query = _dbset.AsQueryable();
-
-            query = paginationRequest.SortOrder == "DESC"
-                ? query.OrderByDescending(x => EF.Property<object>(x, paginationRequest.SortColumn))
-                : query.OrderBy(x => EF.Property<object>(x, paginationRequest.SortColumn));
+            IQueryable<T> query = _dbset.AsQueryable(); // Means i want to creat DB Query, but not yet execute it. It will be executed when we
+                                                        // call ToListAsync() or CountAsync()
 
             int totalRecords = await query.CountAsync();
+
+            //By default we use query.orderBy(x=>x.id) but here property passing by user in runtime . To access property passing in runtime,
+            //we use EF.Property<object>(x, "Name") it means x object mein se wo property nikal do jo k "Name" hai"
+
+
+            query = paginationRequest.SortOrder == SortDirection.DESC
+                ? query.OrderByDescending(x => EF.Property<object>(x, paginationRequest.SortBy))
+                : query.OrderBy(x => EF.Property<object>(x, paginationRequest.SortBy));
+
+            if(!string.IsNullOrEmpty(paginationRequest.SearchItem))
+                query =  query.Where(x => EF.Property<string>(x, "Email").Contains(paginationRequest.SearchItem)); //WHERE Email LIKE '%Ham%'
+
 
             var items = await query
                 .Skip((paginationRequest.CurrentPage - 1) * paginationRequest.PageSize)
                 .Take(paginationRequest.PageSize)
                 .ToListAsync();
 
-            return new PaginationResponse<T>
+            return new PaginationResponse<T> 
             {
                 Total = totalRecords,
-                CurrentPage = paginationRequest.CurrentPage,
-                PageSize = paginationRequest.PageSize,
-                Items = items
+                PageSize =  paginationRequest.PageSize,
+                CurrentPage =  paginationRequest.CurrentPage,
+                Items =  items
             };
+
         }
         public async Task<bool> AddAsync(T entity) {
             _dbset.Add(entity); // Not yet saved . It bind flag of Added

@@ -6,7 +6,7 @@ namespace Training.Services
 {
     public interface IUserService
     {
-        public Task<PaginationResponse<User>> GetAllUsers(PaginationRequest paginationRequest);
+        public Task<PaginationResponse<User>> GetUsers(PaginationRequest paginationRequest);
         public Task<bool> AddUser(UserDTO userDto);
         public Task<User> GetUserById(string id);
         public Task<bool> DeleteUserById(string id);

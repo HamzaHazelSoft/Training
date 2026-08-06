@@ -38,7 +38,7 @@ builder.Services.AddScoped<IAuthService,AuthService>();
 // Configure custom response for model validation errors Extension
 builder.Services.ValidateInvalidModel();
 
-//To verify JWT token Extension
+//Configure
 builder.Services.AddJwtAuthentication(builder.Configuration); //Extension Method
                                                               //Internally it calls JwtExtension.AddJwtAuthentication(builder.services,builder.Configuration)
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -24,16 +25,22 @@ namespace Training.Controllers
 */
         public UserController(IUserService UserService) 
         {
-            _userService = UserService;
+            _userService = UserService; 
         }
 
-        //GetAllUser
+        //GetUser
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PaginationRequest paginationRequest)
+        public async Task<IActionResult> Get([FromQuery] PaginationRequest paginationRequest)
         {
-            var users = await _userService.GetAllUsers(paginationRequest);
-            return Ok(users);
-        }
+            try {
+                var response = await _userService.GetUsers(paginationRequest);
+                return Ok(Constant.MessageConstants.UserRetrievedSuccessfully, response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(Constant.MessageConstants.InvalidSorting,ex);
+            }
+        }   
 
         // Create User
         [HttpPost]
@@ -54,7 +61,7 @@ namespace Training.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {

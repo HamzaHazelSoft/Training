@@ -3,6 +3,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using Training.DTOs;
 using Training.Helper;
 using Training.Models;
@@ -22,32 +23,28 @@ namespace Training.Services
             this._mapper = mapper;
         }
 
-        public async Task<PaginationResponse<User>> GetAllUsers(PaginationRequest paginationRequest)
+        public async Task<PaginationResponse<User>> GetUsers(PaginationRequest paginationRequest)
         {
-            if (paginationRequest == null)
-                return new PaginationResponse<User>();
+
+            //Checking Invalid credentials
+            var property = typeof(User).GetProperty(paginationRequest.SortBy,
+                BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance); // Finds a property named "paginationRequest.SortBy"
+                                                                                        // regardless of their casing .Restrict property should be public
+                                                                                        // and should be instance omit static member
+            if (property == null)
+                throw new Exception();
 
             if (paginationRequest.CurrentPage <= 0)
                 paginationRequest.CurrentPage = 1;
 
-            if (paginationRequest.PageSize <= 0)
+            if (paginationRequest.PageSize <= 0 || paginationRequest.PageSize > 50)
                 paginationRequest.PageSize = 10;
 
-            if (string.IsNullOrWhiteSpace(paginationRequest.SortColumn))
-                paginationRequest.SortColumn = "Id";
+            if (string.IsNullOrWhiteSpace(paginationRequest.SortBy))
+                paginationRequest.SortBy = "Id";
 
-            if (string.IsNullOrWhiteSpace(paginationRequest.SortOrder))
-                paginationRequest.SortOrder = "DESC";
 
-            paginationRequest.SortOrder = paginationRequest.SortOrder.ToUpper();
-
-            if (paginationRequest.SortOrder != "ASC" &&
-                paginationRequest.SortOrder != "DESC")
-            {
-                paginationRequest.SortOrder = "DESC";
-            }
-
-            return await genericRepository.GetAllAsync(paginationRequest);
+            return await genericRepository.GetAsync(paginationRequest);
         }  
 
         public async Task<bool> AddUser(UserDTO userDto)
