@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using Training.Models;
 
-namespace Training.Services.Jwt
+namespace Training.Services.Jwt.Implementation
 {
     public class TokenService : ITokenService
     {

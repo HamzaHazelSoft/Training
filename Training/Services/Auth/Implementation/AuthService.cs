@@ -5,7 +5,7 @@ using Training.Helper;
 using Training.Models;
 using Training.Services.Jwt;
 
-namespace Training.Services.Auth
+namespace Training.Services.Auth.Implementation
 {
     public class AuthService : IAuthService
     {

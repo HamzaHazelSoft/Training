@@ -4,10 +4,10 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
+using Training.Context;
 using Training.DTOs;
-using Training.Enums;
 using Training.Helper;
-using Training.Models;
 
 namespace Training.Repositories
 {
@@ -31,19 +31,13 @@ namespace Training.Repositories
             IQueryable<T> query = _dbset.AsQueryable(); // Means i want to creat DB Query, but not yet execute it. It will be executed when we
                                                         // call ToListAsync() or CountAsync()
 
+            if (!string.IsNullOrWhiteSpace(paginationRequest.SearchItem))
+                query = query.Where(paginationRequest.SearchItem); //internally dynamic LINQ converting it to LAMBDA expression
+                                                                   //query.Where(x => x.Email.Contains("hamza"));
+
             int totalRecords = await query.CountAsync();
 
-            //By default we use query.orderBy(x=>x.id) but here property passing by user in runtime . To access property passing in runtime,
-            //we use EF.Property<object>(x, "Name") it means x object mein se wo property nikal do jo k "Name" hai"
-
-
-            query = paginationRequest.SortOrder == SortDirection.DESC
-                ? query.OrderByDescending(x => EF.Property<object>(x, paginationRequest.SortBy))
-                : query.OrderBy(x => EF.Property<object>(x, paginationRequest.SortBy));
-
-            if(!string.IsNullOrEmpty(paginationRequest.SearchItem))
-                query =  query.Where(x => EF.Property<string>(x, "Email").Contains(paginationRequest.SearchItem)); //WHERE Email LIKE '%Ham%'
-
+            query = query = query.OrderBy(paginationRequest.SortBy); // e.g. "Id DESC" ya "Name ASC" . ORDER BY Id DESC
 
             var items = await query
                 .Skip((paginationRequest.CurrentPage - 1) * paginationRequest.PageSize)

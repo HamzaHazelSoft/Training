@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Training.Context;
 using Training.Extensions;
 using Training.Helper;
 using Training.Mappings;
@@ -10,7 +11,10 @@ using Training.Models;
 using Training.Repositories;
 using Training.Services;
 using Training.Services.Auth;
+using Training.Services.Auth.Implementation;
 using Training.Services.Jwt;
+using Training.Services.Jwt.Implementation;
+using Training.Services.Users.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();

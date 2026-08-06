@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Training.Models;
 
-namespace Training.Models;
+namespace Training.Context;
 
 public partial class TrainingContext : IdentityDbContext<User>
 {

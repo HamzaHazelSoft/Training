@@ -10,6 +10,7 @@ using Training.DTOs;
 using Training.Helper;
 using Training.Models;
 using Training.Services;
+using static Training.Helper.Constant;
 
 namespace Training.Controllers
 {
@@ -34,11 +35,11 @@ namespace Training.Controllers
         {
             try {
                 var response = await _userService.GetUsers(paginationRequest);
-                return Ok(Constant.MessageConstants.UserRetrievedSuccessfully, response);
+                return Ok(MessageConstants.UserRetrievedSuccessfully, response);
             }
             catch(Exception ex)
             {
-                return BadRequest(Constant.MessageConstants.InvalidSorting,ex);
+                return BadRequest(MessageConstants.InvalidSorting,ex);
             }
         }   
 
@@ -51,13 +52,13 @@ namespace Training.Controllers
                 bool status = await _userService.AddUser(user);
 
                 if (status)
-                    return Ok(Constant.MessageConstants.UserCreatedSuccessfully, user); //Method1
+                    return Ok(MessageConstants.UserCreatedSuccessfully, user); //Method1
 
-                return BadRequest(Constant.MessageConstants.UserCreationFailed);
+                return BadRequest(MessageConstants.UserCreationFailed);
             }
             catch(Exception ex)
             {
-                return BadRequest(Constant.MessageConstants.ErrorCreatingUser, ex);
+                return BadRequest(MessageConstants.ErrorCreatingUser, ex);
             }
         }
 
@@ -70,13 +71,13 @@ namespace Training.Controllers
                 var user = await _userService.GetUserById(id);
 
                 if (user != null)
-                    return Ok(Constant.MessageConstants.UserRetrievedSuccessfully, user); //Method1
+                    return Ok(MessageConstants.UserRetrievedSuccessfully, user); //Method1
 
-                return BadRequest(Constant.MessageConstants.UserNotFound);
+                return BadRequest(MessageConstants.UserNotFound);
             }
             catch(Exception ex)
             {
-                return BadRequest(Constant.MessageConstants.ErrorRetrievingUser, ex);
+                return BadRequest(MessageConstants.ErrorRetrievingUser, ex);
             }
         }
 
@@ -89,13 +90,13 @@ namespace Training.Controllers
                 bool status = await _userService.DeleteUserById(id);
 
                 if (status)
-                    return Ok(Constant.MessageConstants.UserDeletedSuccessfully);
+                    return Ok(MessageConstants.UserDeletedSuccessfully);
 
-                return BadRequest(Constant.MessageConstants.UserNotFound);
+                return BadRequest(MessageConstants.UserNotFound);
             }
             catch(Exception ex)
             {
-                return BadRequest(Constant.MessageConstants.ErrorDeletingUser, ex);
+                return BadRequest(MessageConstants.ErrorDeletingUser, ex);
             }
         }
 
@@ -108,13 +109,13 @@ namespace Training.Controllers
                 bool status = await _userService.UpdateUserById(id, user);
 
                 if (status)
-                    return Ok(Constant.MessageConstants.UserUpdatedSuccessfully, user); //Method1
+                    return Ok(MessageConstants.UserUpdatedSuccessfully, user); //Method1
 
-                return BadRequest(Constant.MessageConstants.UserNotFound);
+                return BadRequest(MessageConstants.UserNotFound);
             }
             catch(Exception ex)
             {
-                return BadRequest(Constant.MessageConstants.ErrorUpdatingUser, ex);
+                return BadRequest(MessageConstants.ErrorUpdatingUser, ex);
             }
         }
     }

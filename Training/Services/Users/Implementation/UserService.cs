@@ -1,15 +1,12 @@
 ﻿
 
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using Training.DTOs;
 using Training.Helper;
-using Training.Models;
 using Training.Repositories;
+using Training.Models;
 
-namespace Training.Services
+namespace Training.Services.Users.Implementation
 {
     public class UserService : IUserService
     {
@@ -26,22 +23,11 @@ namespace Training.Services
         public async Task<PaginationResponse<User>> GetUsers(PaginationRequest paginationRequest)
         {
 
-            //Checking Invalid credentials
-            var property = typeof(User).GetProperty(paginationRequest.SortBy,
-                BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance); // Finds a property named "paginationRequest.SortBy"
-                                                                                        // regardless of their casing .Restrict property should be public
-                                                                                        // and should be instance omit static member
-            if (property == null)
-                throw new Exception();
-
             if (paginationRequest.CurrentPage <= 0)
-                paginationRequest.CurrentPage = 1;
+                throw new ArgumentException("CurrentPage must be greater than 0.");
 
             if (paginationRequest.PageSize <= 0 || paginationRequest.PageSize > 50)
-                paginationRequest.PageSize = 10;
-
-            if (string.IsNullOrWhiteSpace(paginationRequest.SortBy))
-                paginationRequest.SortBy = "Id";
+                throw new ArgumentException("PageSize must be between 1 and 50.");
 
 
             return await genericRepository.GetAsync(paginationRequest);
