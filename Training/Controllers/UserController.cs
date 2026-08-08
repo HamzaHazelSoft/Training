@@ -1,14 +1,16 @@
-﻿using Azure;
+﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Primitives;
 using Microsoft.Identity.Client;
+using Org.BouncyCastle.Security;
 using System.Reflection.Metadata.Ecma335;
 using Training.DTOs;
 using Training.Helper;
 using Training.Models;
+using Training.Services.Mail;
 using Training.Services;
 using static Training.Helper.Constant;
 
@@ -62,7 +64,7 @@ namespace Training.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {

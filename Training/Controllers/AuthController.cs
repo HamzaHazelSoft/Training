@@ -38,6 +38,45 @@ namespace Training.Controllers
             }
         }
 
+        [HttpPost("set-password")]
+        public async Task<IActionResult> SetPassword(SetPasswordDTO passwordDTO)
+        {
+            try
+            {
+                var response = await _authService.SetPassword(passwordDTO);
+                if (!response.Success)
+                {
+                    return BadRequest(response);
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred while settting password", ex);
+            }
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            try
+            {
+                var response = await _authService.ConfirmEmail(userId, token);
+
+                if (!response.Success)
+                {
+                    return BadRequest(response);
+                }
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("An error occurred while confirming email", ex);
+            }
+        }
+
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO loginDTO)
         {

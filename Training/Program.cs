@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,19 +15,28 @@ using Training.Services.Auth;
 using Training.Services.Auth.Implementation;
 using Training.Services.Jwt;
 using Training.Services.Jwt.Implementation;
+using Training.Services.Mail;
+using Training.Services.Mail.Implementation;
 using Training.Services.Users.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
-// Register the DbContext with the connection string from appsettings.json
+// Registering the DBContext
 builder.Services.AddDbContext<TrainingContext>(options =>
     options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
+
+builder.Services.AddHangfire(config => //Configuring Hangfire
+    config.UseSqlServerStorage(
+        builder.Configuration["ConnectionStrings:DefaultConnection"]
+    ));
+
+builder.Services.AddHangfireServer(); //Background jobs execute karne wala Hangfire worker start kar rha
 
 // Register Identity services with the User model and IdentityRole
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<TrainingContext>()
-    .AddDefaultTokenProviders(); 
+    .AddDefaultTokenProviders(); //Identity ko security tokens generate/validate karne ka mechanism deta hai.
 
 // Register AutoMapper which help us to map data from DTO to Model and vice versa
 builder.Services.AddAutoMapper(typeof(UserMapping));
@@ -52,6 +62,7 @@ builder.Services.ConfigurePassword();
 
 builder.Services.AddScoped<ITokenService,TokenService>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddTransient<IMailService, MailService>();
 
 var app = builder.Build();
 
@@ -64,6 +75,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi(); 
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHangfireDashboard();
 }
 
 app.UseHttpsRedirection();

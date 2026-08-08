@@ -9,5 +9,7 @@ namespace Training.Services.Auth
     {
         public Task<Response<User>> Register(RegisterDTO registerDTO);
         public Task<Response<string>> Login(LoginDTO loginDTO);
+        public Task<Response<User>> ConfirmEmail(string userId, string token);
+        public Task<Response<User>> SetPassword(SetPasswordDTO passwordDTO);
     }
 }
