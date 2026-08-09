@@ -4,15 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Training.Context;
-
+using DbContext = UserManagementSystem.Context.DbContext;
 
 #nullable disable
 
-namespace Training.Migrations
+namespace UserManagementSystem.Migrations
 {
-    [DbContext(typeof(TrainingContext))]
-    partial class TrainingContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DbContext))]
+    partial class DbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -156,7 +155,7 @@ namespace Training.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Training.Models.User", b =>
+            modelBuilder.Entity("UserManagementSystem.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -168,7 +167,7 @@ namespace Training.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly?>("DOB")
+                    b.Property<DateOnly>("DOB")
                         .HasColumnType("date");
 
                     b.Property<string>("Email")
@@ -179,9 +178,11 @@ namespace Training.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -241,7 +242,7 @@ namespace Training.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Training.Models.User", null)
+                    b.HasOne("UserManagementSystem.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -250,7 +251,7 @@ namespace Training.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Training.Models.User", null)
+                    b.HasOne("UserManagementSystem.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -265,7 +266,7 @@ namespace Training.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Training.Models.User", null)
+                    b.HasOne("UserManagementSystem.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -274,7 +275,7 @@ namespace Training.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Training.Models.User", null)
+                    b.HasOne("UserManagementSystem.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

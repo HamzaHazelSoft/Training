@@ -1,76 +1,102 @@
 ﻿
 
 using AutoMapper;
-using Training.DTOs;
-using Training.Helper;
-using Training.Repositories;
-using Training.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Reflection.Metadata;
+using UserManagementSystem.DTOs;
+using UserManagementSystem.Models;
+using UserManagementSystem.Repositories;
+using static UserManagementSystem.Helper.Constant;
 
-namespace Training.Services.Users.Implementation
+namespace UserManagementSystem.Services.Users.Implementation
 {
     public class UserService : IUserService
     {
 
-        private readonly IGenericRepository<User> genericRepository;
+        private readonly IGenericRepository<User> _genericRepository;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public UserService(IGenericRepository<User> genericRepository, IMapper mapper)
+        public UserService(IGenericRepository<User> genericRepository,
+            IMapper mapper,
+            UserManager<User> userManager)
         {
-            this.genericRepository = genericRepository;
-            this._mapper = mapper;
+            _genericRepository = genericRepository;
+            _mapper = mapper;
+            _userManager = userManager;
+        }
+        //UserService private helper
+        private async Task<User> GetUser(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return null;
+
+            return await _genericRepository.GetByIdAsync(id);
         }
 
-        public async Task<PaginationResponse<User>> GetUsers(PaginationRequest paginationRequest)
+        public async Task<PaginationResponseDTO<UserDTO>> GetUsers(PaginationRequestDTO paginationRequest)
         {
 
             if (paginationRequest.CurrentPage <= 0)
-                throw new ArgumentException("CurrentPage must be greater than 0.");
+                throw new ArgumentException(MessageConstants.InvalidCurrentPage);
 
-            if (paginationRequest.PageSize <= 0 || paginationRequest.PageSize > 50)
-                throw new ArgumentException("PageSize must be between 1 and 50.");
+            if (paginationRequest.PageSize <= 0 )
+                throw new ArgumentException(MessageConstants.InvalidPageSize);
 
 
-            return await genericRepository.GetAsync(paginationRequest);
+            var result =  await _genericRepository.GetAsync(paginationRequest);
+
+            return new PaginationResponseDTO<UserDTO>
+            {
+                Total = result.Total,
+                PageSize = result.PageSize,
+                CurrentPage = result.CurrentPage,
+                Items = _mapper.Map<List<UserDTO>>(result.Items)
+            };
         }  
 
-        public async Task<bool> AddUser(UserDTO userDto)
+        public async Task<UserDTO> GetUserById(string id)
         {
-            if(userDto == null)
-                return false;
+            var user = await GetUser(id);
 
-            var user = _mapper.Map<User>(userDto); //Map the UserDTO to a User entity
-            return await genericRepository.AddAsync(user);
-        }
-
-        public async Task<User> GetUserById(string id)
-        {
-            if(string.IsNullOrEmpty(id))
+            if (user == null)
                 return null;
-            
-            return await genericRepository.GetByIdAsync(id);
+
+            return _mapper.Map<UserDTO>(user);
         }
 
-        // Deletes a user by Id
         public async Task<bool> DeleteUserById(string id)
         {
-            if (string.IsNullOrEmpty(id))
-                return false;
-
-            return await genericRepository.DeleteByIdAsync(id);
-        }
-        public async Task<bool> UpdateUserById(string id, UserDTO userDto)
-        {
-            if (string.IsNullOrEmpty(id) || userDto == null)
-                return false;
-
-            var user = await genericRepository.GetByIdAsync(id); //Get the user by Id
+            var user = await GetUser(id);
 
             if (user == null)
                 return false;
 
-            _mapper.Map(userDto, user); //Mapper copies all related fields from userDto to user
+            return await _genericRepository.DeleteAsync(user);
+        }
+        public async Task<bool> UpdateUserById(string id, UserDTO userDto)
+        {
+            
+            if (userDto == null)
+                return false;
 
-            return await genericRepository.UpdateAsync(user);
+            var user = await GetUser(id);
+            if (user == null)
+                return false;
+
+            var existingUser = await _userManager.FindByNameAsync(userDto.UserName);
+
+            if (existingUser != null && existingUser.Id != id)
+                throw new InvalidOperationException(MessageConstants.UsernameAlreadyTaken);
+
+            userDto.Id = id;
+
+            _mapper.Map(userDto, user);
+            user.UserName = userDto.UserName;
+            user.NormalizedUserName = _userManager.NormalizeName(userDto.UserName);
+
+            return await _genericRepository.UpdateAsync(user);
+
         }
     }
 }

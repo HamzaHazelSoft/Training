@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Training.Models;
+using UserManagementSystem.Models;
 
-namespace Training.Context;
+namespace UserManagementSystem.Context;
 
-public partial class TrainingContext : IdentityDbContext<User>
+public partial class DbContext : IdentityDbContext<User>
 {
-    public TrainingContext()
+    public DbContext()
     {
     }
 
-    public TrainingContext(DbContextOptions<TrainingContext> options)
+    public DbContext(DbContextOptions<DbContext> options)
         : base(options)
     {
     }

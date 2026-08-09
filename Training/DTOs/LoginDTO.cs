@@ -1,4 +1,4 @@
-﻿namespace Training.DTOs
+﻿namespace UserManagementSystem.DTOs
 {
     public class LoginDTO
     {

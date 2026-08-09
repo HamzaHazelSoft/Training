@@ -1,4 +1,4 @@
-﻿namespace Training.Helper
+﻿namespace UserManagementSystem.Helper
 {
     public class EmailTemplate
     {

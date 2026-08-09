@@ -5,46 +5,53 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
-using Training.Context;
-using Training.DTOs;
-using Training.Helper;
+using UserManagementSystem.Context;
+using UserManagementSystem.DTOs;
+using DbContext = UserManagementSystem.Context.DbContext;
 
-namespace Training.Repositories
+namespace UserManagementSystem.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly TrainingContext _context;
+        private readonly DbContext _context;
         private readonly DbSet<T> _dbset;
 
-        public GenericRepository(TrainingContext context)
+        public GenericRepository(DbContext context)
         {
-            this._context = context;
-            this._dbset = context.Set<T>();
+            _context = context;
+            // Gets the DbSet associated with the entity type T.
+            // This allows the repository to work with any entity.
+            _dbset = context.Set<T>();
+
         }
         private async Task<bool> SaveChangesAsync()
         {
+            // Persists all tracked changes to the database.
+            // SaveChangesAsync returns the number of affected records.
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<PaginationResponse<T>> GetAsync(PaginationRequest paginationRequest)
+        public async Task<PaginationResponseDTO<T>> GetAsync(PaginationRequestDTO paginationRequest)
         {
-            IQueryable<T> query = _dbset.AsQueryable(); // Means i want to creat DB Query, but not yet execute it. It will be executed when we
-                                                        // call ToListAsync() or CountAsync()
+
+            // Creates an IQueryable query without executing it immediately.
+            // EF Core builds the SQL query and executes it when a terminal
+            // operation such as CountAsync() or ToListAsync() is called.
+            IQueryable<T> query = _dbset.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(paginationRequest.SearchItem))
-                query = query.Where(paginationRequest.SearchItem); //internally dynamic LINQ converting it to LAMBDA expression
-                                                                   //query.Where(x => x.Email.Contains("hamza"));
+                query = query.Where(paginationRequest.SearchItem); 
 
             int totalRecords = await query.CountAsync();
 
-            query = query = query.OrderBy(paginationRequest.SortBy); // e.g. "Id DESC" ya "Name ASC" . ORDER BY Id DESC
+            query = query.OrderBy(paginationRequest.SortBy);
 
             var items = await query
                 .Skip((paginationRequest.CurrentPage - 1) * paginationRequest.PageSize)
                 .Take(paginationRequest.PageSize)
                 .ToListAsync();
 
-            return new PaginationResponse<T> 
+            return new PaginationResponseDTO<T> 
             {
                 Total = totalRecords,
                 PageSize =  paginationRequest.PageSize,
@@ -59,16 +66,9 @@ namespace Training.Repositories
         }
 
         public async Task<T> GetByIdAsync(string id) {
-            return await _dbset.FindAsync(id); // Returns the first entity that matches the Id,
-                                                                                      // or null if no entity is found
+            return await _dbset.FindAsync(id); // Returns the first entity that matches the Id or null if no entity is found
         }
-        public async Task<bool> DeleteByIdAsync(string id) {
-
-            var entity = await GetByIdAsync(id); //Returns the first entity that matches the Id,
-                                          //or null if no entity is found
-            if (entity == null)
-                return false;
- 
+        public async Task<bool> DeleteAsync(T entity) {
             _dbset.Remove(entity); // Now it modifies the flag of the entity to be deleted
             return await SaveChangesAsync();
         }

@@ -2,22 +2,21 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
-using Training.DTOs;
-using Training.Models;
-using Training.Services.Auth;
-using Training.Services.Jwt;
+using UserManagementSystem.DTOs;
+using UserManagementSystem.Models;
+using UserManagementSystem.Services.Auth;
+using UserManagementSystem.Services.Jwt;
+using static UserManagementSystem.Helper.Constant;
 
-namespace Training.Controllers
+namespace UserManagementSystem.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class AuthController : BaseController
     {
 
         private readonly IAuthService _authService;
         public AuthController(IAuthService authService)
         {
-            this._authService = authService;
+            _authService = authService;
         }
 
         [HttpPost("register")]
@@ -26,15 +25,15 @@ namespace Training.Controllers
             try
             {
                 var response = await _authService.Register(registerDTO);
-                if (!response.Success)
-                {
-                    return BadRequest(response);
-                }
-                return Ok(response);
+                return Ok(MessageConstants.UserCreatedSuccessfully, response);
             }
-            catch(Exception ex)
+            catch(InvalidOperationException ex)
             {
-                return BadRequest("An error occurred while registering user", ex);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(MessageConstants.ErrorRegisteringUser, ex);
             }
         }
 
@@ -44,15 +43,19 @@ namespace Training.Controllers
             try
             {
                 var response = await _authService.SetPassword(passwordDTO);
-                if (!response.Success)
-                {
-                    return BadRequest(response);
-                }
-                return Ok(response);
+                return Ok(MessageConstants.PasswordSetSuccessfully,response);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest("An error occurred while settting password", ex);
+                return BadRequest(MessageConstants.ErrorSettingPassword, ex);
             }
         }
 
@@ -61,18 +64,16 @@ namespace Training.Controllers
         {
             try
             {
-                var response = await _authService.ConfirmEmail(userId, token);
-
-                if (!response.Success)
-                {
-                    return BadRequest(response);
-                }
-
-                return Ok(response);
+                var UserDTO = await _authService.ConfirmEmail(userId, token);
+                return Ok(MessageConstants.EmailConfirmedSuccessfully, UserDTO);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest("An error occurred while confirming email", ex);
+                return BadRequest(MessageConstants.ErrorConfirmingEmail, ex);
             }
         }
 
@@ -82,23 +83,18 @@ namespace Training.Controllers
         {
             try
             {
-                var response = await _authService.Login(loginDTO);
-
-                if (!response.Success)
-                {
-                    return BadRequest(response);
-                }
-
-                return Ok(response);
+                string token = await _authService.Login(loginDTO);
+                return Ok(MessageConstants.LoginSuccessful,token);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
-                return BadRequest("An error occurred while logging in user", ex);
+                return BadRequest(MessageConstants.ErrorLoggingIn, ex);
             }
         }
-
-
-
 
     }
 }

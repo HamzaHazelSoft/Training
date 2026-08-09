@@ -5,16 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Training.Context;
-
+using DbContext = UserManagementSystem.Context.DbContext;
 
 #nullable disable
 
-namespace Training.Migrations
+namespace UserManagementSystem.Migrations
 {
-    [DbContext(typeof(TrainingContext))]
-    [Migration("20260803084639_First")]
-    partial class First
+    [DbContext(typeof(DbContext))]
+    [Migration("20260808154725_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,7 +158,7 @@ namespace Training.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Training.Models.User", b =>
+            modelBuilder.Entity("UserManagementSystem.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -246,7 +245,7 @@ namespace Training.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Training.Models.User", null)
+                    b.HasOne("UserManagementSystem.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -255,7 +254,7 @@ namespace Training.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Training.Models.User", null)
+                    b.HasOne("UserManagementSystem.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -270,7 +269,7 @@ namespace Training.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Training.Models.User", null)
+                    b.HasOne("UserManagementSystem.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -279,7 +278,7 @@ namespace Training.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Training.Models.User", null)
+                    b.HasOne("UserManagementSystem.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Training.Helper;
+using UserManagementSystem.Helper;
+using UserManagementSystem.DTOs;
 
-namespace Training.Extensions
+namespace UserManagementSystem.Extensions
 {
     public static class ModelValidationExtension
     {
@@ -12,10 +13,10 @@ namespace Training.Extensions
             {
                 options.InvalidModelStateResponseFactory = context =>
                 {
-                    var response = new Response<object>
+                    var response = new ResponseDTO<object>
                     {
                         Success = false,
-                        Message = "Validation Failed",
+                        Message = "Validations frequired fields are empty",
                         Data = null,
                         Errors = context.ModelState
                                 .Values

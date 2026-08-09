@@ -4,12 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Training.Models;
+namespace UserManagementSystem.Models;
 
 public class User : IdentityUser
 {
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-    public DateOnly? DOB { get; set; }
+
+    [Required]
+    public string FirstName { get; set; }
+
+    [Required]
+    public string LastName { get; set; }
+
+    [Required]
+    public DateOnly DOB { get; set; }
 
 }

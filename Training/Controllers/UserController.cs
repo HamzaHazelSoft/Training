@@ -7,25 +7,19 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.Identity.Client;
 using Org.BouncyCastle.Security;
 using System.Reflection.Metadata.Ecma335;
-using Training.DTOs;
-using Training.Helper;
-using Training.Models;
-using Training.Services.Mail;
-using Training.Services;
-using static Training.Helper.Constant;
+using UserManagementSystem.DTOs;
+using UserManagementSystem.Models;
+using UserManagementSystem.Services.Mail;
+using UserManagementSystem.Services;
+using static UserManagementSystem.Helper.Constant;
 
-namespace Training.Controllers
+namespace UserManagementSystem.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
+    [Authorize]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
-
-        /* DI Because it losely couples the application making it easier to maintain. In simple words, we achieved the
-        Inversion of Control principle by using dependency injection. The service does not create the context and mapper instances,
-        but rather receives them from the outside means Framework
-*/
         public UserController(IUserService UserService) 
         {
             _userService = UserService; 
@@ -33,38 +27,22 @@ namespace Training.Controllers
 
         //GetUser
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationRequest paginationRequest)
-        {
-            try {
-                var response = await _userService.GetUsers(paginationRequest);
-                return Ok(MessageConstants.UserRetrievedSuccessfully, response);
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(MessageConstants.InvalidSorting,ex);
-            }
-        }   
-
-        // Create User
-        [HttpPost]
-        public async Task<IActionResult> Create(UserDTO user)
+        public async Task<IActionResult> Get([FromQuery] PaginationRequestDTO paginationRequest)
         {
             try
             {
-                bool status = await _userService.AddUser(user);
-
-                if (status)
-                    return Ok(MessageConstants.UserCreatedSuccessfully, user); //Method1
-
-                return BadRequest(MessageConstants.UserCreationFailed);
+                var response = await _userService.GetUsers(paginationRequest);
+                return Ok(MessageConstants.UserRetrievedSuccessfully, response);
             }
-            catch(Exception ex)
+            catch (ArgumentException ex) {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
             {
-                return BadRequest(MessageConstants.ErrorCreatingUser, ex);
+                return BadRequest(MessageConstants.InvalidSorting, ex);
             }
-        }
+        }   
 
-        [Authorize(Roles = "User")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
@@ -73,7 +51,7 @@ namespace Training.Controllers
                 var user = await _userService.GetUserById(id);
 
                 if (user != null)
-                    return Ok(MessageConstants.UserRetrievedSuccessfully, user); //Method1
+                    return Ok(MessageConstants.UserRetrievedSuccessfully, user);
 
                 return BadRequest(MessageConstants.UserNotFound);
             }
@@ -89,10 +67,10 @@ namespace Training.Controllers
         {
             try
             {
-                bool status = await _userService.DeleteUserById(id);
+                bool result = await _userService.DeleteUserById(id);
 
-                if (status)
-                    return Ok(MessageConstants.UserDeletedSuccessfully);
+                if (result)
+                    return Ok(MessageConstants.UserDeletedSuccessfully,"");
 
                 return BadRequest(MessageConstants.UserNotFound);
             }
@@ -108,12 +86,16 @@ namespace Training.Controllers
         {
             try
             {
-                bool status = await _userService.UpdateUserById(id, user);
+                bool result = await _userService.UpdateUserById(id, user);
 
-                if (status)
+                if (result)
                     return Ok(MessageConstants.UserUpdatedSuccessfully, user); //Method1
 
                 return BadRequest(MessageConstants.UserNotFound);
+            }
+            catch(InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch(Exception ex)
             {

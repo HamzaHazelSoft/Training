@@ -1,6 +1,6 @@
-﻿namespace Training.Helper
+﻿namespace UserManagementSystem.DTOs
 {
-    public class PaginationResponse<T>
+    public class PaginationResponseDTO<T>
     {
         public int Total { get; set; }
         public int PageSize { get; set; }

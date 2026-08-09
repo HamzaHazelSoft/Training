@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Training.Extensions
+namespace UserManagementSystem.Extensions
 {
     public static class PasswordSettingsExtension
     {
@@ -8,12 +8,12 @@ namespace Training.Extensions
         {
             service.Configure<IdentityOptions>(options =>
             {
-                options.Password.RequiredLength = 2; // Change length
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false; // Allow no special characters
-                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequiredLength = 8; // Change length
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true; // Allow no special characters
+                options.Password.RequiredUniqueChars = 1;
             });
             return service;
         }

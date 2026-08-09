@@ -1,92 +1,110 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Training.DTOs;
-using Training.Helper;
-using static Training.Helper.EmailTemplate;
-using Training.Models;
-using Training.Services.Jwt;
-using Training.Services.Mail;
+using UserManagementSystem.DTOs;
+using UserManagementSystem.Models;
+using UserManagementSystem.Services.Jwt;
+using UserManagementSystem.Services.Mail;
 using Hangfire;
+using System.Transactions;
+using AutoMapper;
+using static UserManagementSystem.Helper.Constant;
+using Microsoft.AspNetCore.Http.Features;
 
-namespace Training.Services.Auth.Implementation
+namespace UserManagementSystem.Services.Auth.Implementation
 {
     public class AuthService : IAuthService
     {
         private readonly UserManager<User> _userManager; //For registering
         private readonly SignInManager<User> _signinManager; //For login
-        private readonly ITokenService _tokenService;
+        private readonly IJwtService _tokenService;
         private readonly IConfiguration _configuration;
         private readonly IMailService _mailService;
+        private readonly IMapper _mapper;
         public AuthService(UserManager<User> userManager, SignInManager<User> signinManager,
-            ITokenService tokenService,IConfiguration configuration,IMailService service)
+            IJwtService tokenService,IConfiguration configuration,IMailService service,IMapper mapper)
         {
             _userManager = userManager;
             _signinManager = signinManager;
             _tokenService = tokenService;
             _configuration = configuration;
             _mailService = service;
+            _mapper = mapper;
         }
-        public async Task<Response<User>> Register(RegisterDTO registerDTO)
+
+        public async Task<RegisterResponseDTO<UserDTO>> Register(RegisterDTO registerDTO)
         {
-            var user = new User
+            User user;
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                UserName = registerDTO.UserName,
-                Email = registerDTO.Email
-            };
-            var result = await _userManager.CreateAsync(user,"1122");
+                 user = new User
+                {
+                    UserName = registerDTO.UserName,
+                    Email = registerDTO.Email,
+                    FirstName = registerDTO.FirstName,
+                    LastName = registerDTO.LastName,
+                    DOB = registerDTO.DOB.Value,
+                    PhoneNumber = registerDTO.PhoneNumber
+                };
 
-            if (!result.Succeeded)
-                return Response<User>.FailureResponse("Failed to register user");
+                IdentityResult result = await _userManager.CreateAsync(user);
 
+                if (!result.Succeeded)
+                {
+                    foreach(var error in result.Errors)
+                    {
+                        if(error.Code == nameof(IdentityErrorDescriber.DuplicateEmail))
+                        {
+                            throw new InvalidOperationException(MessageConstants.UserAlreadyExists);
+                        }
+                        else if(error.Code == nameof(IdentityErrorDescriber.DuplicateUserName))
+                        {
+                            throw new InvalidOperationException(MessageConstants.UsernameAlreadyTaken);
+                        }
+                    }
+                }
+
+                await _userManager.AddToRoleAsync(user, "User");
+                scope.Complete();
+
+            }
+
+            // Email confirmation
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var encodedToken = Uri.EscapeDataString(token);
-            var baseURL = _configuration["AppSettings:BaseUrl"];
+            _ = _mailService.SendConfirmationEmailAsync(user.Email!, user.Id, token);
 
-            var confirmationLink =$"{baseURL}/api/Auth/confirm-email?userId={user.Id}&token={encodedToken}";
+            string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            var subject = GetConfirmationEmailSubject();
+            return new RegisterResponseDTO<UserDTO>
+            {
+                Entity = _mapper.Map<UserDTO>(user),
+                PasswordResetToken = passwordResetToken
+            };
 
-            var body = GetConfirmationEmailBody(confirmationLink);
-
-            BackgroundJob.Enqueue<IMailService>(
-                service => service.SendMailAsync(
-                    user.Email!,
-                    subject,
-                    body
-                )
-            );
-
-            await _userManager.AddToRoleAsync(user, "User");
-
-            var newResettoken = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            return Response<User>.SuccessResponse($"User registered Successfully {newResettoken}",user);
         }
 
-        public async Task<Response<User>> ConfirmEmail(string userId,string token)
+        public async Task<UserDTO> ConfirmEmail(string userId,string token)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
-                return Response<User>.FailureResponse("User not found");
+                throw new InvalidOperationException(MessageConstants.InvalidConfirmationLink);
 
             var result = await _userManager.ConfirmEmailAsync(user, token);
 
             if (!result.Succeeded)
-                return Response<User>.FailureResponse(
-                    "Invalid or expired confirmation token");  
+                throw new InvalidOperationException(MessageConstants.InvalidConfirmationLink);
 
-            return Response<User>.SuccessResponse(
-                "Email confirmed successfully",
-                user);
+            return _mapper.Map<UserDTO>(user);
+
         }
 
-        public async Task<Response<User>> SetPassword(SetPasswordDTO passwordDTO)
+        public async Task<UserDTO> SetPassword(SetPasswordDTO passwordDTO)
         {
             var user = await _userManager.FindByIdAsync(passwordDTO.UserId);
 
             if (user == null)
-                return Response<User>.FailureResponse("User not found");
+                throw new KeyNotFoundException(MessageConstants.UserNotFound);
 
             var result = await _userManager.ResetPasswordAsync(
                 user,
@@ -95,27 +113,25 @@ namespace Training.Services.Auth.Implementation
             );
 
             if (!result.Succeeded)
-                return Response<User>.FailureResponse("Failed to set password");
+                throw new InvalidOperationException(MessageConstants.FailedToSetPassword);
 
-            return Response<User>.SuccessResponse(
-                "Password set successfully",
-                user
-            );
+            return _mapper.Map<UserDTO>(user);
+           
         }
-        public async Task<Response<string>> Login(LoginDTO loginDTO)
+        public async Task<string> Login(LoginDTO loginDTO)
         {
             var user = await _userManager.FindByEmailAsync(loginDTO.Email);
             if (user == null)
-                return Response<string>.FailureResponse("User not found");
+                throw new UnauthorizedAccessException(MessageConstants.UserNotFound);
 
             var result = await _signinManager.CheckPasswordSignInAsync(user, loginDTO.Password, false);
             if (!result.Succeeded)
-                return Response<string>.FailureResponse("Invalid password");
+                throw new UnauthorizedAccessException(MessageConstants.InvalidUsernameOrPassword);
 
             var roles = await _userManager.GetRolesAsync(user);
             var token = _tokenService.CreateToken(user, roles);
 
-            return Response<string>.SuccessResponse("Login successful", token);
+            return token;
         }
     }
 }

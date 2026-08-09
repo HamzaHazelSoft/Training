@@ -1,20 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Training.Helper;
+using UserManagementSystem.DTOs;
 
-namespace Training.Controllers
+namespace UserManagementSystem.Controllers
 {
+
+    [ApiController]
+    [Route("api/[controller]")]
     public abstract class BaseController : ControllerBase
     {
         // Success response with message + data
         protected OkObjectResult Ok<T>(string message, T? data)
         {
-            return base.Ok(Response<T>.SuccessResponse(message, data));
+            return base.Ok(ResponseDTO<T>.SuccessResponse(message, data));
         }
 
         // Failure response with exception
         protected BadRequestObjectResult BadRequest(string message, Exception ex)
         {
-            return base.BadRequest(Response<object>.FailureResponse(message, ex));
+            return base.BadRequest(ResponseDTO<object>.FailureResponse(message, ex));
         }
 
         // Override ControllerBase.Ok(object)
@@ -22,12 +25,12 @@ namespace Training.Controllers
         {
             if (value != null &&
                 value.GetType().IsGenericType &&
-                value.GetType().GetGenericTypeDefinition() == typeof(Response<>))
+                value.GetType().GetGenericTypeDefinition() == typeof(ResponseDTO<>))
             {
                 return base.Ok(value);
             }
 
-            return base.Ok(Response<object>.SuccessResponse(string.Empty, value));
+            return base.Ok(ResponseDTO<object>.SuccessResponse(string.Empty, value));
         }
 
         // Override ControllerBase.BadRequest(object)
@@ -35,7 +38,7 @@ namespace Training.Controllers
         {
             if (error != null &&
                 error.GetType().IsGenericType &&
-                error.GetType().GetGenericTypeDefinition() == typeof(Response<>))
+                error.GetType().GetGenericTypeDefinition() == typeof(ResponseDTO<>))
             {
                 // Already wrapped
                 return base.BadRequest(error);
@@ -44,7 +47,7 @@ namespace Training.Controllers
             // Convert string or object into standard response
             string message = error as string ?? error?.ToString() ?? string.Empty;
 
-            return base.BadRequest(Response<object>.FailureResponse(message));
+            return base.BadRequest(ResponseDTO<object>.FailureResponse(message));
         }
     }
 }

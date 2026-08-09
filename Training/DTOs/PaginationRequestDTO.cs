@@ -1,7 +1,6 @@
-﻿
-namespace Training.Helper
+﻿namespace UserManagementSystem.DTOs
 {
-    public class PaginationRequest
+    public class PaginationRequestDTO
     {
 
         public int CurrentPage { get; set; } = 1; //Prop1

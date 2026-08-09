@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
-using Training.DTOs;
-using Training.Models;
+using UserManagementSystem.DTOs;
+using UserManagementSystem.Models;
 
-namespace Training.Mappings
+namespace UserManagementSystem.Mappings
 {
     public class UserMapping : Profile
     {
         public UserMapping()
         {
-            CreateMap<UserDTO,User>(); //means it can copy data from UserDTO to User. Note: Matching Data
+            CreateMap<UserDTO, User>()
+                .ForMember(x => x.UserName, opt => opt.Ignore());
+
+            CreateMap<User, UserDTO>(); //means copying data from user to UserDTO
+
         }
     }
 }

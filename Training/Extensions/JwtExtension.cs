@@ -1,32 +1,29 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Training.Helper;
+using UserManagementSystem.DTOs;
+using static UserManagementSystem.Helper.Constant;
 
-
-/*
-
-builder.Services.AddJwtAuthentication(builder.Configuration);
-
-Ye JWT token ko validate nahi karta.
-Ye sirf Dependency Injection (DI) mein Authentication services register aur JWT Authentication middleware ko configure karta hai (issuer, audience, secret key aur events waghera).
-
-Baad mein jab request aati hai aur:
-
-app.UseAuthentication();
-
-chalti hai, tab ye configuration use hoti hai aur token actually validate hota hai. 
-
-*/
-namespace Training.Extensions
+namespace UserManagementSystem.Extensions
 {
     public static class ServiceExtensions
     {
-
-        //ya this OOP wala nhi ha, basically idr this k mtlb ha is method ko IServiceCollection pr call hona ki permission do 
-        //Rules for extension : class should be static, method should be static, first parameter should be this and type of the class you want to extend
+        /// <summary>
+        /// Registers JWT Bearer authentication and configures the token validation rules.
+        /// </summary>
+        /// <param name="services">
+        /// The application's dependency injection service collection.
+        /// </param>
+        /// <param name="configuration">
+        /// Provides access to JWT configuration values from appsettings.json.
+        /// </param>
+        /// <returns>
+        /// The same IServiceCollection instance so additional services can be registered.
+        /// </returns>
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,IConfiguration configuration)
         {
+
+            // Configure JWT Bearer as the default authentication and challenge scheme.
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -34,6 +31,7 @@ namespace Training.Extensions
             })
             .AddJwtBearer(options =>
             {
+                // Define the rules used to validate incoming JWT tokens.
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     // Token verification rules
@@ -44,23 +42,31 @@ namespace Training.Extensions
                     ValidAudience = configuration["Jwt:Audience"], 
 
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!)) // Secret key for signing the token
+                        Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
                 };
 
-                options.Events = new JwtBearerEvents //JwtBearerEvents is a class that defines a set of events triggered during JWT validation
+                // Customize the responses generated during JWT authentication and authorization.
+                options.Events = new JwtBearerEvents
                 {
-                   OnChallenge = async context => //A specific event triggered right before the API returns a 401 Unauthorized during Authentication
-                   {
-                       context.HandleResponse(); // Prevent the ASP.NET CORE default 401 response
-                       Response<string> response = Response<string>.FailureResponse(Constant.MessageConstants.InvalidOrExpiredToken);
+                   // Executed when authentication fails and the API is about to return 401 Unauthorized.
+                    OnChallenge = async context => 
+                    {
+                       // Prevent the ASP.NET CORE default 401 response
+                       context.HandleResponse();
+                       context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+                        ResponseDTO<string> response = ResponseDTO<string>.FailureResponse(MessageConstants.AuthenticationFailed);
                        await context.Response.WriteAsJsonAsync(response);
-                   },
-                   
-                   OnForbidden = async context => //This specific event triggered right before the API return 403 Forbidden
-                   {
-                       Response<string> response = Response<string>.FailureResponse(Constant.MessageConstants.ErrorRestrictedPermission);
+                    },
+
+                    // Executed when the user is authenticated but does not have permission
+                    // to access the requested resource.
+                    OnForbidden = async context => 
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        ResponseDTO<string> response = ResponseDTO<string>.FailureResponse(MessageConstants.AccessDenied);
                        await context.Response.WriteAsJsonAsync(response);
-                   }
+                    }
                 };
 
             });
@@ -69,8 +75,3 @@ namespace Training.Extensions
         }
     }
 }
-
-/*
- Authentication middleware user ki identity establish karta hai, aur Authorization middleware us identity ko use karke permissions check karta hai. 
-Agar access deny ho jaye, to Authorization middleware current Authentication scheme (JWT Bearer) ko OnForbidden event execute karne ke liye bolta hai.
- */

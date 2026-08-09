@@ -1,16 +1,15 @@
 ﻿
-using Training.DTOs;
-using Training.Helper;
-using Training.Models;
+using UserManagementSystem.DTOs;
+using UserManagementSystem.Models;
 
-namespace Training.Repositories
+namespace UserManagementSystem.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {
-        public Task<PaginationResponse<T>> GetAsync(PaginationRequest paginationRequest);
+        public Task<PaginationResponseDTO<T>> GetAsync(PaginationRequestDTO paginationRequest);
         public Task<bool> AddAsync(T entity);
         public Task<T> GetByIdAsync(string id);
-        public Task<bool> DeleteByIdAsync(string id);
+        public Task<bool> DeleteAsync(T entity);
         public Task<bool> UpdateAsync(T entity);
     }
 }

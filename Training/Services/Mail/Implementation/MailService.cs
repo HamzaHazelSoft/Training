@@ -1,15 +1,19 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
+using UserManagementSystem.Models;
+using static UserManagementSystem.Helper.EmailTemplate;
 
-namespace Training.Services.Mail.Implementation
+namespace UserManagementSystem.Services.Mail.Implementation
 {
     public class MailService : IMailService
     {
 
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _mailConfiguration;
+        private readonly IConfiguration _appConfiguration;
         public MailService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _mailConfiguration = configuration.GetSection("MailSettings");
+            _appConfiguration = configuration.GetSection("AppSettings");
         }
 
         public async Task SendMailAsync(string recipient, string subject, string body)
@@ -18,15 +22,15 @@ namespace Training.Services.Mail.Implementation
             using (var smtp = new SmtpClient())
             {
                 await smtp.ConnectAsync(
-                    _configuration["MailSettings:Host"]!,
-                    int.Parse(_configuration["MailSettings:Port"]!),
+                    _mailConfiguration["Host"]!,
+                    int.Parse(_mailConfiguration["Port"]!),
                     MailKit.Security.SecureSocketOptions.StartTls
                 );
 
                 // Authenticate SMTP client
                 await smtp.AuthenticateAsync(
-                    _configuration["MailSettings:UserName"]!,
-                    _configuration["MailSettings:Password"]!
+                    _mailConfiguration["From"]!,
+                    _mailConfiguration["Password"]!
                 );
 
                 // Create email message  
@@ -34,8 +38,8 @@ namespace Training.Services.Mail.Implementation
 
                 // Set sender and recipient
                 message.From.Add(new MailboxAddress(
-                    "Hamza Sagheer",
-                    _configuration["MailSettings:From"]!
+                    _mailConfiguration["UserName"]!,
+                    _mailConfiguration["From"]!
                 ));
                 message.To.Add(MailboxAddress.Parse(recipient));
 
@@ -52,6 +56,21 @@ namespace Training.Services.Mail.Implementation
                 // Disconnect from SMTP server
                 await smtp.DisconnectAsync(true);
             }
+        }
+
+        public async Task SendConfirmationEmailAsync(string recipient,string userId,string token)
+        {
+            var encodedToken = Uri.EscapeDataString(token);
+
+            var baseURL = _appConfiguration["BaseUrl"];
+
+            var confirmationLink = $"{baseURL}/api/Auth/confirm-email?userId={userId}&token={encodedToken}";
+
+            var subject = GetConfirmationEmailSubject();
+
+            var body = GetConfirmationEmailBody(confirmationLink);
+
+            await SendMailAsync(recipient,subject,body);
         }
     }
 }

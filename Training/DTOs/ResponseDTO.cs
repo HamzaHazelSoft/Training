@@ -1,6 +1,6 @@
-﻿namespace Training.Helper
+﻿namespace UserManagementSystem.DTOs
 {
-    public class Response<T>
+    public class ResponseDTO<T>
     {
         public bool Success { get; set; }
 
@@ -11,9 +11,9 @@
         public List<string> Errors { get; set; } = new();
 
         // Success with data
-        public static Response<T> SuccessResponse(string message, T? data)
+        public static ResponseDTO<T> SuccessResponse(string message, T? data)
         {
-            return new Response<T>
+            return new ResponseDTO<T>
             {
                 Success = true,
                 Message = message,
@@ -22,9 +22,9 @@
         }
 
         // Success without data
-        public static Response<T> SuccessResponse(string message)
+        public static ResponseDTO<T> SuccessResponse(string message)
         {
-            return new Response<T>
+            return new ResponseDTO<T>
             {
                 Success = true,
                 Message = message,
@@ -33,9 +33,9 @@
         }
 
         // Failure with message only
-        public static Response<T> FailureResponse(string message)
+        public static ResponseDTO<T> FailureResponse(string message)
         {
-            return new Response<T>
+            return new ResponseDTO<T>
             {
                 Success = false,
                 Message = message,
@@ -44,12 +44,12 @@
         }
 
         // Failure with exception
-        public static Response<T> FailureResponse(string message, Exception ex)
+        public static ResponseDTO<T> FailureResponse(string message, Exception ex)
         {
             List<string> errors = new List<string> { ex.Message, ex.InnerException?.Message };
 
 
-            return new Response<T>
+            return new ResponseDTO<T>
             {
                 Success = false,
                 Message = message,

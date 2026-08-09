@@ -1,14 +1,12 @@
-﻿using Training.DTOs;
-using Training.Helper;
-using Training.Models;
+﻿using UserManagementSystem.DTOs;
+using UserManagementSystem.Models;
 
-namespace Training.Services
+namespace UserManagementSystem.Services
 {
     public interface IUserService
     {
-        public Task<PaginationResponse<User>> GetUsers(PaginationRequest paginationRequest);
-        public Task<bool> AddUser(UserDTO userDto);
-        public Task<User> GetUserById(string id);
+        public Task<PaginationResponseDTO<UserDTO>> GetUsers(PaginationRequestDTO paginationRequest);
+        public Task<UserDTO> GetUserById(string id);
         public Task<bool> DeleteUserById(string id);
         public Task<bool> UpdateUserById(string id, UserDTO userDto);
 
