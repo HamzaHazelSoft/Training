@@ -64,14 +64,24 @@ namespace UserManagementSystem.Services.Auth.Implementation
                     }
                 }
 
-                await _userManager.AddToRoleAsync(user, "User");
+                foreach (var role in registerDTO.Roles)
+                {
+                    IdentityResult roleResult = await _userManager.AddToRoleAsync(user, role);
+
+                    if (!roleResult.Succeeded)
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            throw new InvalidOperationException(error.Description);
+                        }
+                    }
+                }
+
                 scope.Complete();
 
             }
 
-            // Email confirmation
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            _ = _mailService.SendConfirmationEmailAsync(user.Email!, user.Id, token);
+            _ = _mailService.SendConfirmationEmailAsync(user);
 
             string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -104,7 +114,7 @@ namespace UserManagementSystem.Services.Auth.Implementation
             var user = await _userManager.FindByIdAsync(passwordDTO.UserId);
 
             if (user == null)
-                throw new KeyNotFoundException(MessageConstants.UserNotFound);
+                throw new Exception(MessageConstants.UserNotFound);
 
             var result = await _userManager.ResetPasswordAsync(
                 user,

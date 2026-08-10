@@ -18,5 +18,6 @@ namespace UserManagementSystem.DTOs
         public string Email { get; set; }
         [Required]
         public string PhoneNumber { get; set; }
+        public List<string> Roles { get; set; }
     }
 }

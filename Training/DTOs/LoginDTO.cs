@@ -1,8 +1,15 @@
-﻿namespace UserManagementSystem.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UserManagementSystem.DTOs
 {
     public class LoginDTO
     {
+
+        [EmailAddress]
+        [Required]
         public string Email { get; set; }
+
+        [Required]
         public string Password { get; set; }
     }
 }

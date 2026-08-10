@@ -89,9 +89,9 @@ namespace UserManagementSystem.Controllers
                 bool result = await _userService.UpdateUserById(id, user);
 
                 if (result)
-                    return Ok(MessageConstants.UserUpdatedSuccessfully, user); //Method1
+                    return Ok(MessageConstants.UserUpdatedSuccessfully, user); 
 
-                return BadRequest(MessageConstants.UserNotFound);
+                return BadRequest(MessageConstants.FailedToUpdateUser);
             }
             catch(InvalidOperationException ex)
             {

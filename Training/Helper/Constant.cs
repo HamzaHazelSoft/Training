@@ -19,8 +19,10 @@
             public const string UserAlreadyExists = "User already exists";
             public const string UsernameAlreadyTaken = "Username has already been taken";
             public const string InvalidUsernameOrPassword = "Incorrect username or password";
-            public const string FailedToSetPassword = "Failed to set password. Please follow the format";
+            public const string FailedToSetPassword = "Unable to set the password. Please ensure it meets the required password criteria";
+            public const string FailedToUpdateUser = "Failed to update user";
             public const string InvalidConfirmationLink = "Invalid confirmation link";
+            public const string ValidationsOrRequiredFieldIssues = "Validations failed or required fields are empty";
 
 
             // Exception Messages

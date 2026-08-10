@@ -9,7 +9,8 @@ namespace UserManagementSystem.Mappings
         public UserMapping()
         {
             CreateMap<UserDTO, User>()
-                .ForMember(x => x.UserName, opt => opt.Ignore());
+                .ForMember(x => x.UserName, opt => opt.Ignore())
+                .ForMember(x=>x.Email, opt => opt.Ignore());
 
             CreateMap<User, UserDTO>(); //means copying data from user to UserDTO
 

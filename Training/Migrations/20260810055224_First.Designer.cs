@@ -12,8 +12,8 @@ using DbContext = UserManagementSystem.Context.DbContext;
 namespace UserManagementSystem.Migrations
 {
     [DbContext(typeof(DbContext))]
-    [Migration("20260808154725_first")]
-    partial class first
+    [Migration("20260810055224_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

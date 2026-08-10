@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using UserManagementSystem.Helper;
 using UserManagementSystem.DTOs;
+using static UserManagementSystem.Helper.Constant;
 
 namespace UserManagementSystem.Extensions
 {
@@ -16,7 +17,7 @@ namespace UserManagementSystem.Extensions
                     var response = new ResponseDTO<object>
                     {
                         Success = false,
-                        Message = "Validations frequired fields are empty",
+                        Message = MessageConstants.ValidationsOrRequiredFieldIssues,
                         Data = null,
                         Errors = context.ModelState
                                 .Values

@@ -24,11 +24,11 @@ namespace UserManagementSystem.Repositories
             _dbset = context.Set<T>();
 
         }
-        private async Task<bool> SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
             // Persists all tracked changes to the database.
             // SaveChangesAsync returns the number of affected records.
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<PaginationResponseDTO<T>> GetAsync(PaginationRequestDTO paginationRequest)
@@ -60,22 +60,15 @@ namespace UserManagementSystem.Repositories
             };
 
         }
-        public async Task<bool> AddAsync(T entity) {
-            _dbset.Add(entity); // Not yet saved . It bind flag of Added
-            return await SaveChangesAsync();
-        }
-
         public async Task<T> GetByIdAsync(string id) {
             return await _dbset.FindAsync(id); // Returns the first entity that matches the Id or null if no entity is found
         }
-        public async Task<bool> DeleteAsync(T entity) {
+        public void Delete(T entity) {
             _dbset.Remove(entity); // Now it modifies the flag of the entity to be deleted
-            return await SaveChangesAsync();
         }
-        public async Task<bool> UpdateAsync(T entity) 
+        public void Update(T entity) 
         {
             _dbset.Update(entity); //Now it modifies the flag of the entity to be updated
-            return await SaveChangesAsync();
         }
     }
 

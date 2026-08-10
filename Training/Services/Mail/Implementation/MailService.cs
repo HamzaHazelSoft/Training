@@ -1,4 +1,5 @@
 ﻿using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Identity;
 using MimeKit;
 using UserManagementSystem.Models;
 using static UserManagementSystem.Helper.EmailTemplate;
@@ -10,10 +11,12 @@ namespace UserManagementSystem.Services.Mail.Implementation
 
         private readonly IConfiguration _mailConfiguration;
         private readonly IConfiguration _appConfiguration;
-        public MailService(IConfiguration configuration)
+        private readonly UserManager<User> _userManager;
+        public MailService(IConfiguration configuration,UserManager<User> userManager)
         {
             _mailConfiguration = configuration.GetSection("MailSettings");
             _appConfiguration = configuration.GetSection("AppSettings");
+            _userManager = userManager;
         }
 
         public async Task SendMailAsync(string recipient, string subject, string body)
@@ -58,19 +61,20 @@ namespace UserManagementSystem.Services.Mail.Implementation
             }
         }
 
-        public async Task SendConfirmationEmailAsync(string recipient,string userId,string token)
+        public async Task SendConfirmationEmailAsync(User user)
         {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var encodedToken = Uri.EscapeDataString(token);
 
             var baseURL = _appConfiguration["BaseUrl"];
 
-            var confirmationLink = $"{baseURL}/api/Auth/confirm-email?userId={userId}&token={encodedToken}";
+            var confirmationLink = $"{baseURL}/api/Auth/confirm-email?userId={user.Id}&token={encodedToken}";
 
             var subject = GetConfirmationEmailSubject();
 
             var body = GetConfirmationEmailBody(confirmationLink);
 
-            await SendMailAsync(recipient,subject,body);
+            await SendMailAsync(user.Email!,subject,body);
         }
     }
 }
