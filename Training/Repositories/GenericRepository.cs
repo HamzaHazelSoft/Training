@@ -24,11 +24,12 @@ namespace UserManagementSystem.Repositories
             _dbset = context.Set<T>();
 
         }
-        public async Task<int> SaveChangesAsync()
+        public async Task<bool> SaveChangesAsync()
         {
             // Persists all tracked changes to the database.
             // SaveChangesAsync returns the number of affected records.
-            return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync() > 0;
+
         }
 
         public async Task<PaginationResponseDTO<T>> GetAsync(PaginationRequestDTO paginationRequest)

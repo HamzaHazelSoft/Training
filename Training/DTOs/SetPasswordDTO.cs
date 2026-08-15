@@ -1,9 +1,16 @@
-﻿namespace UserManagementSystem.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace UserManagementSystem.DTOs
 {
     public class SetPasswordDTO
     {
-        public string Token { get; set; }
+        [Required]
+        public string PasswordResetToken { get; set; }
+
+        [Required]
         public string NewPassword { get; set; }
+
+        [Required]
         public string UserId { get; set; }
     }
 }

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UserManagementSystem.Extensions;
 using UserManagementSystem.Mappings;
+using UserManagementSystem.Middlewares;
 using UserManagementSystem.Models;
 using UserManagementSystem.Repositories;
 using UserManagementSystem.Services;
@@ -13,13 +14,21 @@ using UserManagementSystem.Services.Mail;
 using UserManagementSystem.Services.Mail.Implementation;
 using UserManagementSystem.Services.Users.Implementation;
 using DbContext = UserManagementSystem.Context.DbContext;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+// Configure Serilog using appsettings.json
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 builder.Services.AddControllers();
 
 
 // Register the application's database context with SQL Server.
-builder.Services.AddDbContext<UserManagementSystem.Context.DbContext>(options =>
+builder.Services.AddDbContext<DbContext>(options =>
     options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
 
 // Register Identity services with the User model and IdentityRole
@@ -52,9 +61,11 @@ builder.Services.ValidateInvalidModel();
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 // Configure ASP.NET Core Identity password requirements.
-builder.Services.ConfigurePassword();
+builder.Services.ConfigurePassword(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseMiddleware<LoggingMiddleware>();
 
 // Configure development-only middleware and tools.
 if (app.Environment.IsDevelopment())

@@ -4,6 +4,7 @@ using System.Reflection.PortableExecutable;
 using System.Security.Claims;
 using System.Text;
 using UserManagementSystem.Models;
+using static UserManagementSystem.Helper.Constant;
 
 namespace UserManagementSystem.Services.Jwt.Implementation
 {
@@ -16,7 +17,7 @@ namespace UserManagementSystem.Services.Jwt.Implementation
 
         public JwtService(IConfiguration configuration)
         {
-            _jwtConfiguration = configuration.GetSection("Jwt");
+            _jwtConfiguration = configuration.GetSection(ConfigurationConstants.Jwt);
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace UserManagementSystem.Services.Jwt.Implementation
 
             // Retrieve the JWT signing key from application configuration.
             // The same symmetric key is used by the application to sign and validate the token.
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration["Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfiguration[ConfigurationConstants.Key]!));
 
 
             // These credentials are used to digitally sign the JWT.
@@ -53,9 +54,9 @@ namespace UserManagementSystem.Services.Jwt.Implementation
             (
                 signingCredentials: credentials,
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(_jwtConfiguration.GetValue<int>("ExpiryHours")), 
-                issuer : _jwtConfiguration["Issuer"], 
-                audience : _jwtConfiguration["Audience"] 
+                expires: DateTime.UtcNow.AddHours(_jwtConfiguration.GetValue<int>(ConfigurationConstants.ExpiryHours)), 
+                issuer : _jwtConfiguration[ConfigurationConstants.Issuer], 
+                audience : _jwtConfiguration[ConfigurationConstants.Audience] 
             );
 
             // Serialize the JWT into the standard Header.Payload.Signature format.

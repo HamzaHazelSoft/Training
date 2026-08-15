@@ -1,6 +1,8 @@
 ﻿using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MimeKit;
+using Serilog.Context;
 using UserManagementSystem.Models;
 using static UserManagementSystem.Helper.EmailTemplate;
 
@@ -10,13 +12,16 @@ namespace UserManagementSystem.Services.Mail.Implementation
     {
 
         private readonly IConfiguration _mailConfiguration;
-        private readonly IConfiguration _appConfiguration;
+        private readonly IConfiguration _urlConfiguration;
         private readonly UserManager<User> _userManager;
-        public MailService(IConfiguration configuration,UserManager<User> userManager)
+        private readonly ILogger<MailService> _logger;
+        public MailService(IConfiguration configuration,UserManager<User> userManager,
+            ILogger<MailService> logger)
         {
             _mailConfiguration = configuration.GetSection("MailSettings");
-            _appConfiguration = configuration.GetSection("AppSettings");
+            _urlConfiguration = configuration.GetSection("Urls");
             _userManager = userManager;
+            _logger = logger;
         }
 
         public async Task SendMailAsync(string recipient, string subject, string body)
@@ -63,18 +68,32 @@ namespace UserManagementSystem.Services.Mail.Implementation
 
         public async Task SendConfirmationEmailAsync(User user)
         {
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var encodedToken = Uri.EscapeDataString(token);
 
-            var baseURL = _appConfiguration["BaseUrl"];
+            using var _uid = LogContext.PushProperty("UserId", user.Id);
+            using var _un = LogContext.PushProperty("UserName", user.UserName);
 
-            var confirmationLink = $"{baseURL}/api/Auth/confirm-email?userId={user.Id}&token={encodedToken}";
+            try
+            {
+                _logger.LogInformation("Confirmation email sending started. Email: {Email}", user.Email);
 
-            var subject = GetConfirmationEmailSubject();
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = Uri.EscapeDataString(token);
 
-            var body = GetConfirmationEmailBody(confirmationLink);
+                var confirmationLink = $"{_urlConfiguration["BackendUrl"]}/api/Auth/confirm-email?userId={user.Id}&token={encodedToken}";
 
-            await SendMailAsync(user.Email!,subject,body);
+                var subject = GetConfirmationEmailSubject();
+
+                var body = GetConfirmationEmailBody(confirmationLink);
+
+                await SendMailAsync(user.Email!, subject, body);
+
+                _logger.LogInformation("Confirmation email sent successfully. Email: {Email}", user.Email);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send confirmation email. Email: {Email}", user.Email);
+                throw;
+            }
         }
     }
 }

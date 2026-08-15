@@ -6,9 +6,9 @@ namespace UserManagementSystem.Services.Auth
 {
     public interface IAuthService
     {
-        public Task<RegisterResponseDTO<UserDTO>> Register(RegisterDTO registerDTO);
-        public Task<string> Login(LoginDTO loginDTO);
-        public Task<UserDTO> ConfirmEmail(string userId, string token);
+        public Task<UserDTO> Register(RegisterDTO registerDTO);
+        public Task<LoginResponseDTO> Login(LoginDTO loginDTO);
+        public Task<RegisterResponseDTO> ConfirmEmail(string userId, string token);
         public Task<UserDTO> SetPassword(SetPasswordDTO passwordDTO);
     }
 }

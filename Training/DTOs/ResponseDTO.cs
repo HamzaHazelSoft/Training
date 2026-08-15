@@ -1,5 +1,6 @@
 ﻿namespace UserManagementSystem.DTOs
 {
+
     public class ResponseDTO<T>
     {
         public bool Success { get; set; }

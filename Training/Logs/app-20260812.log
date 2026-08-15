@@ -1,0 +1,87 @@
+[2026-08-12 16:55:10] [INF] [RequestId: 800000e8-0000-fb00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: GET, Path: /
+[2026-08-12 16:55:10] [INF] [RequestId: 800000e8-0000-fb00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: GET, Path: /, StatusCode: 200
+[2026-08-12 17:00:12] [INF] [RequestId: 800000fb-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: GET, Path: /
+[2026-08-12 17:00:13] [INF] [RequestId: 800000fb-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: GET, Path: /, StatusCode: 200
+[2026-08-12 17:00:30] [INF] [RequestId: 80000042-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/register
+[2026-08-12 17:00:31] [WRN] [RequestId: 80000042-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Request validation failed. Method: POST, Path: /api/Auth/register, Errors: The Email field is required. | The Email field is not a valid e-mail address. | Phone number must be exactly 11 digits long and must be in 03xxxxxxxxx format.
+[2026-08-12 17:00:31] [INF] [RequestId: 80000042-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/register, StatusCode: 400
+[2026-08-12 17:00:36] [INF] [RequestId: 800000dd-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/register
+[2026-08-12 17:00:36] [WRN] [RequestId: 800000dd-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request validation failed. Method: POST, Path: /api/Auth/register, Errors: The Email field is required. | The Email field is not a valid e-mail address. | The Roles field is required. | Phone number must be exactly 11 digits long and must be in 03xxxxxxxxx format.
+[2026-08-12 17:00:36] [INF] [RequestId: 800000dd-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/register, StatusCode: 400
+[2026-08-12 17:00:41] [INF] [RequestId: 800000df-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/register
+[2026-08-12 17:00:41] [WRN] [RequestId: 800000df-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request validation failed. Method: POST, Path: /api/Auth/register, Errors: The DOB field is required. | The Email field is required. | The Email field is not a valid e-mail address. | The Roles field is required. | Phone number must be exactly 11 digits long and must be in 03xxxxxxxxx format.
+[2026-08-12 17:00:41] [INF] [RequestId: 800000df-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/register, StatusCode: 400
+[2026-08-12 17:00:50] [INF] [RequestId: 800000fd-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/register
+[2026-08-12 17:00:50] [WRN] [RequestId: 800000fd-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request validation failed. Method: POST, Path: /api/Auth/register, Errors: The DOB field is required. | The Email field is required. | The Email field is not a valid e-mail address. | The Roles field is required. | The LastName field is required. | Phone number must be exactly 11 digits long and must be in 03xxxxxxxxx format.
+[2026-08-12 17:00:50] [INF] [RequestId: 800000fd-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/register, StatusCode: 400
+[2026-08-12 17:01:01] [INF] [RequestId: 800000e1-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/register
+[2026-08-12 17:01:01] [WRN] [RequestId: 800000e1-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request validation failed. Method: POST, Path: /api/Auth/register, Errors: The DOB field is required. | The Email field is required. | The Email field is not a valid e-mail address. | The Roles field is required. | The LastName field is required. | The PhoneNumber field is required. | Phone number must be exactly 11 digits long and must be in 03xxxxxxxxx format.
+[2026-08-12 17:01:01] [INF] [RequestId: 800000e1-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/register, StatusCode: 400
+[2026-08-12 17:01:26] [INF] [RequestId: 80000044-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/register
+[2026-08-12 17:01:26] [INF] [RequestId: 80000044-0003-f800-b63f-84710c7967bb] [UserName: Test715] User registration started. Email: test715@mailinator.com
+[2026-08-12 17:01:28] [WRN] [RequestId: 80000044-0003-f800-b63f-84710c7967bb] [UserName: Test715] Invalid role entered. RoleId: 3
+[2026-08-12 17:01:29] [ERR] [RequestId: 80000044-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Registration request failed. Email: test715@mailinator.com
+System.Exception: Invalid role entered
+   at UserManagementSystem.Services.Auth.Implementation.AuthService.Register(RegisterDTO registerDTO) in C:\TrainingDotNet\Training\Services\Auth\Implementation\AuthService.cs:line 93
+   at UserManagementSystem.Controllers.AuthController.Register(RegisterDTO registerDTO) in C:\TrainingDotNet\Training\Controllers\AuthController.cs:line 31
+[2026-08-12 17:01:29] [INF] [RequestId: 80000044-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/register, StatusCode: 400
+[2026-08-12 17:01:34] [INF] [RequestId: 800000ff-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/register
+[2026-08-12 17:01:34] [INF] [RequestId: 800000ff-0001-f900-b63f-84710c7967bb] [UserName: Test715] User registration started. Email: test715@mailinator.com
+[2026-08-12 17:01:35] [INF] [RequestId: 800000ff-0001-f900-b63f-84710c7967bb] [UserName: Test715] User registered successfully. UserId: 666ae9df-039b-4283-8acc-f20ae3f92a4b
+[2026-08-12 17:01:35] [INF] [RequestId: 800000ff-0001-f900-b63f-84710c7967bb] [UserName: Test715] Confirmation email sending started. Email: test715@mailinator.com
+[2026-08-12 17:01:35] [INF] [RequestId: 800000ff-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/register, StatusCode: 200
+[2026-08-12 17:01:45] [INF] [RequestId: 800000ff-0001-f900-b63f-84710c7967bb] [UserName: Test715] Confirmation email sent successfully. Email: test715@mailinator.com
+[2026-08-12 17:01:51] [INF] [RequestId: 800000b7-0002-f900-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: GET, Path: /api/Auth/confirm-email
+[2026-08-12 17:01:51] [INF] [RequestId: 800000b7-0002-f900-b63f-84710c7967bb] [UserName: Anonymous] Email confirmation started.
+[2026-08-12 17:01:51] [INF] [RequestId: 800000b7-0002-f900-b63f-84710c7967bb] [UserName: Test715] Email confirmed successfully.
+[2026-08-12 17:01:51] [INF] [RequestId: 800000b7-0002-f900-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: GET, Path: /api/Auth/confirm-email, StatusCode: 200
+[2026-08-12 17:02:32] [INF] [RequestId: 800000e3-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/set-password
+[2026-08-12 17:02:32] [INF] [RequestId: 800000e3-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Password setup started.
+[2026-08-12 17:02:32] [WRN] [RequestId: 800000e3-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Password setup failed - password validation failed. 03316293Op entered: 
+[2026-08-12 17:02:32] [ERR] [RequestId: 800000e3-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Set-password request failed. UserId: 666ae9df-039b-4283-8acc-f20ae3f92a4b
+System.Exception: Unable to set the password. Password must be at least 8 characters long, contain at least one digit, one lowercase letter, one uppercase letter, one special character.
+   at UserManagementSystem.Services.Auth.Implementation.AuthService.SetPassword(SetPasswordDTO passwordDTO) in C:\TrainingDotNet\Training\Services\Auth\Implementation\AuthService.cs:line 171
+   at UserManagementSystem.Controllers.AuthController.SetPassword(SetPasswordDTO passwordDTO) in C:\TrainingDotNet\Training\Controllers\AuthController.cs:line 46
+[2026-08-12 17:02:32] [INF] [RequestId: 800000e3-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/set-password, StatusCode: 400
+[2026-08-12 17:02:44] [INF] [RequestId: 80000046-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/set-password
+[2026-08-12 17:02:44] [INF] [RequestId: 80000046-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Password setup started.
+[2026-08-12 17:02:44] [ERR] [RequestId: 80000046-0003-f800-b63f-84710c7967bb] [UserName: Test715] Password setup failed - invalid/expired reset token.
+[2026-08-12 17:02:44] [ERR] [RequestId: 80000046-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Set-password request failed. UserId: 666ae9df-039b-4283-8acc-f20ae3f92a4b
+System.Exception: The password reset token is invalid or has expired.
+   at UserManagementSystem.Services.Auth.Implementation.AuthService.SetPassword(SetPasswordDTO passwordDTO) in C:\TrainingDotNet\Training\Services\Auth\Implementation\AuthService.cs:line 192
+   at UserManagementSystem.Controllers.AuthController.SetPassword(SetPasswordDTO passwordDTO) in C:\TrainingDotNet\Training\Controllers\AuthController.cs:line 46
+[2026-08-12 17:02:44] [INF] [RequestId: 80000046-0003-f800-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/set-password, StatusCode: 400
+[2026-08-12 17:02:49] [INF] [RequestId: 80000101-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/set-password
+[2026-08-12 17:02:49] [INF] [RequestId: 80000101-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Password setup started.
+[2026-08-12 17:02:49] [INF] [RequestId: 80000101-0001-f900-b63f-84710c7967bb] [UserName: Test715] Password set successfully.
+[2026-08-12 17:02:49] [INF] [RequestId: 80000101-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/set-password, StatusCode: 200
+[2026-08-12 17:03:01] [INF] [RequestId: 80000103-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: POST, Path: /api/Auth/login
+[2026-08-12 17:03:01] [INF] [RequestId: 80000103-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Login attempt started. Email: test715@mailinator.com
+[2026-08-12 17:03:02] [INF] [RequestId: 80000103-0001-f900-b63f-84710c7967bb] [UserName: Test715] Login successful. UserId: 666ae9df-039b-4283-8acc-f20ae3f92a4b
+[2026-08-12 17:03:02] [INF] [RequestId: 80000103-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: POST, Path: /api/Auth/login, StatusCode: 200
+[2026-08-12 17:03:24] [INF] [RequestId: 800000e5-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: GET, Path: /api/User/3e060c6b-d03f-4c6f-86e5-50cf2e7efb53
+[2026-08-12 17:03:24] [INF] [RequestId: 800000e5-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] User retrieval started.
+[2026-08-12 17:03:24] [INF] [RequestId: 800000e5-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] User retrieved successfully.
+[2026-08-12 17:03:24] [INF] [RequestId: 800000e5-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: GET, Path: /api/User/3e060c6b-d03f-4c6f-86e5-50cf2e7efb53, StatusCode: 200
+[2026-08-12 17:03:29] [INF] [RequestId: 800000a6-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: GET, Path: /api/User/3e060c6b-d03f-4c6f-86e5-50cf2e7efb5
+[2026-08-12 17:03:29] [INF] [RequestId: 800000a6-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] User retrieval started.
+[2026-08-12 17:03:29] [WRN] [RequestId: 800000a6-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] User retrieval failed - user not found.
+[2026-08-12 17:03:29] [INF] [RequestId: 800000a6-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: GET, Path: /api/User/3e060c6b-d03f-4c6f-86e5-50cf2e7efb5, StatusCode: 400
+[2026-08-12 17:03:34] [INF] [RequestId: 800000a8-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: GET, Path: /api/User/3e060c6b-d03f-4c6f-86e5-50cf2e7efb53
+[2026-08-12 17:03:34] [INF] [RequestId: 800000a8-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] User retrieval started.
+[2026-08-12 17:03:34] [INF] [RequestId: 800000a8-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] User retrieved successfully.
+[2026-08-12 17:03:34] [INF] [RequestId: 800000a8-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: GET, Path: /api/User/3e060c6b-d03f-4c6f-86e5-50cf2e7efb53, StatusCode: 200
+[2026-08-12 17:03:54] [INF] [RequestId: 800000aa-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: PUT, Path: /api/User/3e060c6b-d03f-4c6f-86e5-50cf2e7efb53
+[2026-08-12 17:03:54] [INF] [RequestId: 800000aa-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: PUT, Path: /api/User/3e060c6b-d03f-4c6f-86e5-50cf2e7efb53, StatusCode: 401
+[2026-08-12 17:04:39] [INF] [RequestId: 800000ac-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: PUT, Path: /api/User/666ae9df-039b-4283-8acc-f20ae3f92a4b
+[2026-08-12 17:04:39] [INF] [RequestId: 800000ac-0002-fc00-b63f-84710c7967bb] [UserName: Test713] User update started. UserName: Test713
+[2026-08-12 17:04:39] [INF] [RequestId: 800000ac-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] User updated successfully
+[2026-08-12 17:04:39] [INF] [RequestId: 800000ac-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: PUT, Path: /api/User/666ae9df-039b-4283-8acc-f20ae3f92a4b, StatusCode: 200
+[2026-08-12 17:06:23] [INF] [RequestId: 800000ae-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: DELETE, Path: /api/User/666ae9df-039b-4283-8acc-f20ae3f92a4
+[2026-08-12 17:06:23] [INF] [RequestId: 800000ae-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] User deletion started.
+[2026-08-12 17:06:23] [WRN] [RequestId: 800000ae-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] User deletion failed - user not found.
+[2026-08-12 17:06:23] [INF] [RequestId: 800000ae-0002-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: DELETE, Path: /api/User/666ae9df-039b-4283-8acc-f20ae3f92a4, StatusCode: 400
+[2026-08-12 17:06:28] [INF] [RequestId: 800000e7-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request started. Method: DELETE, Path: /api/User/666ae9df-039b-4283-8acc-f20ae3f92a4b
+[2026-08-12 17:06:28] [INF] [RequestId: 800000e7-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] User deletion started.
+[2026-08-12 17:06:28] [INF] [RequestId: 800000e7-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] User deleted successfully
+[2026-08-12 17:06:28] [INF] [RequestId: 800000e7-0000-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. Method: DELETE, Path: /api/User/666ae9df-039b-4283-8acc-f20ae3f92a4b, StatusCode: 200

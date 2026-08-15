@@ -2,9 +2,9 @@
 
 namespace UserManagementSystem.DTOs
 {
-    public class RegisterResponseDTO<T>
+    public class RegisterResponseDTO
     {
-        public T Entity { get; set; }
+        public UserDTO UserDTO { get; set; }
         public string PasswordResetToken { get; set; }
     }
 }

@@ -8,19 +8,19 @@ namespace UserManagementSystem.Controllers
     [Route("api/[controller]")]
     public abstract class BaseController : ControllerBase
     {
-        // Success response with message + data
+        // Success response with message and data
         protected OkObjectResult Ok<T>(string message, T? data)
         {
-            return base.Ok(ResponseDTO<T>.SuccessResponse(message, data));
+            return base.Ok(ResponseDTO<T>.SuccessResponse(message, data)); 
         }
 
-        // Failure response with exception
+        // Failure response with some exception
         protected BadRequestObjectResult BadRequest(string message, Exception ex)
         {
             return base.BadRequest(ResponseDTO<object>.FailureResponse(message, ex));
         }
 
-        // Override ControllerBase.Ok(object)
+        // Here we are overriding ControllerBase.Ok(object)
         public override OkObjectResult Ok(object? value)
         {
             if (value != null &&
@@ -28,6 +28,10 @@ namespace UserManagementSystem.Controllers
                 value.GetType().GetGenericTypeDefinition() == typeof(ResponseDTO<>))
             {
                 return base.Ok(value);
+            }
+            if(value is string stringValue)
+            {
+                return base.Ok(ResponseDTO<string>.SuccessResponse(stringValue));
             }
 
             return base.Ok(ResponseDTO<object>.SuccessResponse(string.Empty, value));
@@ -38,14 +42,20 @@ namespace UserManagementSystem.Controllers
         {
             if (error != null &&
                 error.GetType().IsGenericType &&
-                error.GetType().GetGenericTypeDefinition() == typeof(ResponseDTO<>))
+                error.GetType().GetGenericTypeDefinition() == typeof(ResponseDTO<>)) 
             {
-                // Already wrapped
+                // Already wrapped so we can directly send it to our base Controller
                 return base.BadRequest(error);
             }
 
-            // Convert string or object into standard response
-            string message = error as string ?? error?.ToString() ?? string.Empty;
+            if (error is string errorMessage)
+            {
+                return base.BadRequest(
+                    ResponseDTO<object>.FailureResponse(errorMessage)
+                );
+            }
+
+            string message = error?.ToString() ?? string.Empty;
 
             return base.BadRequest(ResponseDTO<object>.FailureResponse(message));
         }

@@ -15,9 +15,12 @@ namespace UserManagementSystem.Controllers
     {
 
         private readonly IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private readonly ILogger<AuthController> _logger;
+
+        public AuthController(IAuthService authService,ILogger<AuthController> logger)
         {
             _authService = authService;
+            _logger = logger;
         }
 
         [HttpPost("register")]
@@ -28,13 +31,10 @@ namespace UserManagementSystem.Controllers
                 var response = await _authService.Register(registerDTO);
                 return Ok(MessageConstants.UserCreatedSuccessfully, response);
             }
-            catch(InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
             catch (Exception ex)
             {
-                return BadRequest(MessageConstants.ErrorRegisteringUser, ex);
+                _logger.LogError(ex, "Registration request failed. Email: {Email}", registerDTO.Email);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -46,17 +46,10 @@ namespace UserManagementSystem.Controllers
                 var response = await _authService.SetPassword(passwordDTO);
                 return Ok(MessageConstants.PasswordSetSuccessfully,response);
             }
-            catch(KeyNotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
             catch (Exception ex)
             {
-                return BadRequest(MessageConstants.ErrorSettingPassword, ex);
+                _logger.LogError(ex,"Set-password request failed. UserId: {UserId}", passwordDTO.UserId);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -68,13 +61,10 @@ namespace UserManagementSystem.Controllers
                 var UserDTO = await _authService.ConfirmEmail(userId, token);
                 return Ok(MessageConstants.EmailConfirmedSuccessfully, UserDTO);
             }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
             catch (Exception ex)
             {
-                return BadRequest(MessageConstants.ErrorConfirmingEmail, ex);
+                _logger.LogError(ex,"Email confirmation failed. UserId: {UserId}", userId);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -84,16 +74,13 @@ namespace UserManagementSystem.Controllers
         {
             try
             {
-                string token = await _authService.Login(loginDTO);
-                return Ok(MessageConstants.LoginSuccessful,token);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return BadRequest(ex.Message);
+                LoginResponseDTO loginResponse = await _authService.Login(loginDTO);
+                return Ok(MessageConstants.LoginSuccessful,loginResponse);
             }
             catch (Exception ex)
             {
-                return BadRequest(MessageConstants.ErrorLoggingIn, ex);
+                _logger.LogError(ex,"Login request denied. Email: {Email}",loginDTO.Email);
+                return BadRequest(ex.Message);
             }
         }
 

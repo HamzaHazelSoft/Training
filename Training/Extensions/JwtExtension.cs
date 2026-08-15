@@ -23,6 +23,7 @@ namespace UserManagementSystem.Extensions
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,IConfiguration configuration)
         {
 
+            var jwtSettings = configuration.GetSection(ConfigurationConstants.Jwt);
             // Configure JWT Bearer as the default authentication and challenge scheme.
             services.AddAuthentication(options =>
             {
@@ -38,11 +39,10 @@ namespace UserManagementSystem.Extensions
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidAudience = configuration["Jwt:Audience"], 
-
+                    ValidIssuer = jwtSettings[ConfigurationConstants.Issuer],
+                    ValidAudience = jwtSettings[ConfigurationConstants.Audience], 
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
+                        Encoding.UTF8.GetBytes(jwtSettings[ConfigurationConstants.Key]!))
                 };
 
                 // Customize the responses generated during JWT authentication and authorization.

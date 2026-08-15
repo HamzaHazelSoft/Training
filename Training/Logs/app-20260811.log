@@ -1,0 +1,106 @@
+[2026-08-11 17:06:20] [INF] [RequestId: 800000a7-0002-f800-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: GET, Path: /
+[2026-08-11 17:06:21] [INF] [RequestId: 800000a7-0002-f800-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 17:07:06] [INF] [RequestId: 800000a9-0002-f800-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/register
+[2026-08-11 17:07:06] [INF] [RequestId: 800000a9-0002-f800-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 17:16:03] [INF] [RequestId: 800001b6-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: GET, Path: /
+[2026-08-11 17:16:03] [INF] [RequestId: 800001b6-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 17:16:09] [INF] [RequestId: 80000079-0001-fe00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/register
+[2026-08-11 17:16:10] [WRN] [RequestId: 80000079-0001-fe00-b63f-84710c7967bb] [UserName: ] Request validation failed. Method: POST, Path: /api/Auth/register, Errors: The DOB field is required. | The PhoneNumber field is required. | The PhoneNumber field is not a valid phone number.
+[2026-08-11 17:16:10] [INF] [RequestId: 80000079-0001-fe00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 17:30:30] [INF] [RequestId: 800000e3-0000-fa00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: GET, Path: /
+[2026-08-11 17:30:30] [INF] [RequestId: 800000e3-0000-fa00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 17:31:43] [INF] [RequestId: 800000f4-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/register
+[2026-08-11 17:31:44] [WRN] [RequestId: 800000f4-0001-f900-b63f-84710c7967bb] [UserName: ] Request validation failed. Method: POST, Path: /api/Auth/register, Errors: The DOB field is required. | The PhoneNumber field is required. | The PhoneNumber field is not a valid phone number.
+[2026-08-11 17:31:44] [INF] [RequestId: 800000f4-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 17:32:04] [INF] [RequestId: 80000101-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/register
+[2026-08-11 17:32:04] [INF] [RequestId: 80000101-0003-fc00-b63f-84710c7967bb] [UserName: Test704] User registration started. UserName: Test704, Email: test706@mailinator.com
+[2026-08-11 17:32:08] [INF] [RequestId: 80000101-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 17:32:23] [INF] [RequestId: 800000f6-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request starte d. UserName: Anonymous, Method: POST, Path: /api/Auth/register
+[2026-08-11 17:32:23] [INF] [RequestId: 800000f6-0001-f900-b63f-84710c7967bb] [UserName: Test707] User registration started. UserName: Test707, Email: test707@mailinator.com
+[2026-08-11 17:32:25] [INF] [RequestId: 800000f6-0001-f900-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 18:22:40] [INF] [RequestId: 800000b4-0002-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: GET, Path: /
+[2026-08-11 18:22:40] [INF] [RequestId: 800000b4-0002-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 18:25:05] [INF] [RequestId: 8000007c-0001-fe00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/register
+[2026-08-11 18:25:06] [WRN] [RequestId: 8000007c-0001-fe00-b63f-84710c7967bb] [UserName: ] Request validation failed. Method: POST, Path: /api/Auth/register, Errors: The DOB field is required. | The Email field is required. | The Email field is not a valid e-mail address. | The Roles field is required. | The LastName field is required.
+[2026-08-11 18:25:06] [INF] [RequestId: 8000007c-0001-fe00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 18:25:37] [INF] [RequestId: 80000105-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/register
+[2026-08-11 18:25:37] [INF] [RequestId: 80000105-0003-fc00-b63f-84710c7967bb] [UserName: Test708] User registration started. UserName: Test708, Email: test708@mailinator.com
+[2026-08-11 18:25:41] [INF] [RequestId: 80000105-0003-fc00-b63f-84710c7967bb] [UserName: Test708] User registered successfully. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c, UserName: Test708
+[2026-08-11 18:25:41] [INF] [RequestId: 80000105-0003-fc00-b63f-84710c7967bb] [UserName: ] Confirmation email sending started. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c, Email: test708@mailinator.com
+[2026-08-11 18:25:41] [INF] [RequestId: 80000105-0003-fc00-b63f-84710c7967bb] [UserName: ] Confirmation email sending started. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c, Email: test708@mailinator.com
+[2026-08-11 18:25:42] [INF] [RequestId: 80000105-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 18:25:46] [INF] [RequestId: 80000105-0003-fc00-b63f-84710c7967bb] [UserName: ] Confirmation email sent successfully. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c, Email: test708@mailinator.com
+[2026-08-11 18:26:32] [INF] [RequestId: 800000ab-0002-f800-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: GET, Path: /api/Auth/confirm-email
+[2026-08-11 18:26:32] [INF] [RequestId: 800000ab-0002-f800-b63f-84710c7967bb] [UserName: ] Email confirmation started. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c
+[2026-08-11 18:26:32] [INF] [RequestId: 800000ab-0002-f800-b63f-84710c7967bb] [UserName: ] Email confirmed successfully. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c
+[2026-08-11 18:26:32] [INF] [RequestId: 800000ab-0002-f800-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 18:27:42] [INF] [RequestId: 80000108-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/set-password
+[2026-08-11 18:27:42] [INF] [RequestId: 80000108-0003-fc00-b63f-84710c7967bb] [UserName: ] Password setup started. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c
+[2026-08-11 18:27:43] [ERR] [RequestId: 80000108-0003-fc00-b63f-84710c7967bb] [UserName: ] Set password failed. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c
+System.Exception: The password reset token is invalid or has expired.
+   at UserManagementSystem.Services.Auth.Implementation.AuthService.SetPassword(SetPasswordDTO passwordDTO) in C:\TrainingDotNet\Training\Services\Auth\Implementation\AuthService.cs:line 164
+   at UserManagementSystem.Controllers.AuthController.SetPassword(SetPasswordDTO passwordDTO) in C:\TrainingDotNet\Training\Controllers\AuthController.cs:line 47
+[2026-08-11 18:27:43] [INF] [RequestId: 80000108-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 18:27:56] [INF] [RequestId: 8000010a-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/set-password
+[2026-08-11 18:27:56] [WRN] [RequestId: 8000010a-0003-fc00-b63f-84710c7967bb] [UserName: ] Request validation failed. Method: POST, Path: /api/Auth/set-password, Errors: The NewPassword field is required. | The PasswordResetToken field is required.
+[2026-08-11 18:27:56] [INF] [RequestId: 8000010a-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 18:28:06] [INF] [RequestId: 800001bb-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/set-password
+[2026-08-11 18:28:06] [WRN] [RequestId: 800001bb-0000-ff00-b63f-84710c7967bb] [UserName: ] Request validation failed. Method: POST, Path: /api/Auth/set-password, Errors: The UserId field is required. | The NewPassword field is required. | The PasswordResetToken field is required.
+[2026-08-11 18:28:06] [INF] [RequestId: 800001bb-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 18:28:21] [INF] [RequestId: 800000b7-0002-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/set-password
+[2026-08-11 18:28:21] [INF] [RequestId: 800000b7-0002-fd00-b63f-84710c7967bb] [UserName: ] Password setup started. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c
+[2026-08-11 18:28:22] [INF] [RequestId: 800000b7-0002-fd00-b63f-84710c7967bb] [UserName: ] Password set successfully. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c
+[2026-08-11 18:28:22] [INF] [RequestId: 800000b7-0002-fd00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 18:29:59] [INF] [RequestId: 8000010c-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/login
+[2026-08-11 18:29:59] [WRN] [RequestId: 8000010c-0003-fc00-b63f-84710c7967bb] [UserName: ] Request validation failed. Method: POST, Path: /api/Auth/login, Errors: The Email field is required. | The Email field is not a valid e-mail address.
+[2026-08-11 18:29:59] [INF] [RequestId: 8000010c-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 18:30:05] [INF] [RequestId: 8000002c-0001-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/login
+[2026-08-11 18:30:05] [INF] [RequestId: 8000002c-0001-fc00-b63f-84710c7967bb] [UserName: ] Login attempt started. Email: test708@mailinator.com
+[2026-08-11 18:30:06] [ERR] [RequestId: 8000002c-0001-fc00-b63f-84710c7967bb] [UserName: ] Login failed. Email: test708@mailinator.com
+System.UnauthorizedAccessException: Incorrect username or password
+   at UserManagementSystem.Services.Auth.Implementation.AuthService.Login(LoginDTO loginDTO) in C:\TrainingDotNet\Training\Services\Auth\Implementation\AuthService.cs:line 180
+   at UserManagementSystem.Controllers.AuthController.Login(LoginDTO loginDTO) in C:\TrainingDotNet\Training\Controllers\AuthController.cs:line 78
+[2026-08-11 18:30:06] [INF] [RequestId: 8000002c-0001-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 18:30:12] [INF] [RequestId: 800001bd-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: POST, Path: /api/Auth/login
+[2026-08-11 18:30:12] [INF] [RequestId: 800001bd-0000-ff00-b63f-84710c7967bb] [UserName: ] Login attempt started. Email: test708@mailinator.com
+[2026-08-11 18:30:13] [INF] [RequestId: 800001bd-0000-ff00-b63f-84710c7967bb] [UserName: Test708] Login successful. UserId: 825d7fad-841b-4a16-8fcd-da2494cb019c, UserName: Test708
+[2026-08-11 18:30:13] [INF] [RequestId: 800001bd-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 18:30:42] [INF] [RequestId: 800001bf-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: GET, Path: /api/User/8892dd00-3abf-4d83-a6d0-37d22b8e5387
+[2026-08-11 18:30:42] [INF] [RequestId: 800001bf-0000-ff00-b63f-84710c7967bb] [UserName: ] User retrieval started. UserId: 8892dd00-3abf-4d83-a6d0-37d22b8e5387
+[2026-08-11 18:30:42] [INF] [RequestId: 800001bf-0000-ff00-b63f-84710c7967bb] [UserName: ] User retrieved successfully. UserId: 8892dd00-3abf-4d83-a6d0-37d22b8e5387
+[2026-08-11 18:30:42] [INF] [RequestId: 800001bf-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 18:30:47] [INF] [RequestId: 8000002e-0001-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: GET, Path: /api/User/8892dd00-3abf-4d83-a6d0-37d22b8e538
+[2026-08-11 18:30:47] [INF] [RequestId: 8000002e-0001-fc00-b63f-84710c7967bb] [UserName: ] User retrieval started. UserId: 8892dd00-3abf-4d83-a6d0-37d22b8e538
+[2026-08-11 18:30:47] [INF] [RequestId: 8000002e-0001-fc00-b63f-84710c7967bb] [UserName: ] User retrieved successfully. UserId: 8892dd00-3abf-4d83-a6d0-37d22b8e538
+[2026-08-11 18:30:47] [INF] [RequestId: 8000002e-0001-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 18:30:56] [INF] [RequestId: 80000030-0001-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: GET, Path: /api/User
+[2026-08-11 18:30:56] [INF] [RequestId: 80000030-0001-fc00-b63f-84710c7967bb] [UserName: ] User retrieval started. Page: 1, PageSize: 10
+[2026-08-11 18:31:00] [INF] [RequestId: 80000030-0001-fc00-b63f-84710c7967bb] [UserName: ] Users retrieved successfully. Total: 28, Page: 1
+[2026-08-11 18:31:00] [INF] [RequestId: 80000030-0001-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 18:32:16] [INF] [RequestId: 8000010e-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: PUT, Path: /api/User/03753add-a1d2-4244-a3de-c6fecc9d33da
+[2026-08-11 18:32:16] [INF] [RequestId: 8000010e-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 401
+[2026-08-11 18:32:57] [INF] [RequestId: 800001c1-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: PUT, Path: /api/User/03753add-a1d2-4244-a3de-c6fecc9d33da
+[2026-08-11 18:32:57] [INF] [RequestId: 800001c1-0000-ff00-b63f-84710c7967bb] [UserName: Test702] User update started. UserId: 03753add-a1d2-4244-a3de-c6fecc9d33da, UserName: Test702
+[2026-08-11 18:32:58] [ERR] [RequestId: 800001c1-0000-ff00-b63f-84710c7967bb] [UserName: Test702] Failed to update user. UserId: 03753add-a1d2-4244-a3de-c6fecc9d33da, UserName: Test702, Email: test708@mailinator.com
+System.Exception: Username has already been taken
+   at UserManagementSystem.Services.Users.Implementation.UserService.ValidateUsernameAsync(String userId, String username) in C:\TrainingDotNet\Training\Services\Users\Implementation\UserService.cs:line 133
+   at UserManagementSystem.Services.Users.Implementation.UserService.UpdateUserById(String id, RegisterDTO registerDto) in C:\TrainingDotNet\Training\Services\Users\Implementation\UserService.cs:line 103
+   at UserManagementSystem.Controllers.UserController.Update(String id, RegisterDTO registerDTO) in C:\TrainingDotNet\Training\Controllers\UserController.cs:line 93
+[2026-08-11 18:32:58] [INF] [RequestId: 800001c1-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 18:33:11] [INF] [RequestId: 80000110-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: PUT, Path: /api/User/03753add-a1d2-4244-a3de-c6fecc9d33da
+[2026-08-11 18:33:11] [INF] [RequestId: 80000110-0003-fc00-b63f-84710c7967bb] [UserName: Test7081] User update started. UserId: 03753add-a1d2-4244-a3de-c6fecc9d33da, UserName: Test7081
+[2026-08-11 18:33:12] [ERR] [RequestId: 80000110-0003-fc00-b63f-84710c7967bb] [UserName: Test7081] Failed to update user. UserId: 03753add-a1d2-4244-a3de-c6fecc9d33da, UserName: Test7081, Email: test708@mailinator.com
+System.Exception: User already exists
+   at UserManagementSystem.Services.Users.Implementation.UserService.HandleEmailChangeAsync(User user, String userId, String newEmail) in C:\TrainingDotNet\Training\Services\Users\Implementation\UserService.cs:line 149
+   at UserManagementSystem.Services.Users.Implementation.UserService.UpdateUserById(String id, RegisterDTO registerDto) in C:\TrainingDotNet\Training\Services\Users\Implementation\UserService.cs:line 105
+   at UserManagementSystem.Controllers.UserController.Update(String id, RegisterDTO registerDTO) in C:\TrainingDotNet\Training\Controllers\UserController.cs:line 93
+[2026-08-11 18:33:12] [INF] [RequestId: 80000110-0003-fc00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 400
+[2026-08-11 18:33:35] [INF] [RequestId: 800001c3-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request started. UserName: Anonymous, Method: PUT, Path: /api/User/03753add-a1d2-4244-a3de-c6fecc9d33da
+[2026-08-11 18:33:35] [INF] [RequestId: 800001c3-0000-ff00-b63f-84710c7967bb] [UserName: Test709] User update started. UserId: 03753add-a1d2-4244-a3de-c6fecc9d33da, UserName: Test709
+[2026-08-11 18:33:35] [INF] [RequestId: 800001c3-0000-ff00-b63f-84710c7967bb] [UserName: ] User email changed. UserId: 03753add-a1d2-4244-a3de-c6fecc9d33da, NewEmail: test709@mailinator.com
+[2026-08-11 18:33:35] [INF] [RequestId: 800001c3-0000-ff00-b63f-84710c7967bb] [UserName: ] Confirmation email sending started. UserId: 03753add-a1d2-4244-a3de-c6fecc9d33da, Email: test709@mailinator.com
+[2026-08-11 18:33:35] [INF] [RequestId: 800001c3-0000-ff00-b63f-84710c7967bb] [UserName: ] Confirmation email sending started. UserId: 03753add-a1d2-4244-a3de-c6fecc9d33da, Email: test709@mailinator.com
+[2026-08-11 18:33:35] [INF] [RequestId: 800001c3-0000-ff00-b63f-84710c7967bb] [UserName: ] User updated successfully. UserId: 03753add-a1d2-4244-a3de-c6fecc9d33da
+[2026-08-11 18:33:35] [INF] [RequestId: 800001c3-0000-ff00-b63f-84710c7967bb] [UserName: Anonymous] Request completed. UserName: Anonymous, StatusCode: 200
+[2026-08-11 18:33:39] [INF] [RequestId: 800001c3-0000-ff00-b63f-84710c7967bb] [UserName: ] Confirmation email sent successfully. UserI
+d: 03753add-a1d2-4244-a3de-c6fecc9d33da, Email: test709@mailinator.com
